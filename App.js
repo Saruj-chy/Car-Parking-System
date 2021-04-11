@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Appbar from './components/Appbar/Appbar';
+import CurrentLocation from './components/CurrentLocation/CurrentLocation';
 import LoginPage from './components/LoginPage/LoginPage';
 
 const App = () => {
     return (
         <View>
-            {/* <Appbar /> */}
-            <LoginPage />
+            {/* <LoginPage /> */}
+            {/* <CurrentLocation /> */}
         </View>
     );
 };
