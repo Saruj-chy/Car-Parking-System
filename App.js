@@ -13,7 +13,7 @@ const App = () => {
     <NativeRouter>
       <View style={styles.container}>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={LoginPage} />
           {/* <Route exact path="/login" component={LoginPage} /> */}
           <Route exact path="/googlemaps" component={GoogleMaps} />
           <Route exact path="/location" component={CurrentLocation} />

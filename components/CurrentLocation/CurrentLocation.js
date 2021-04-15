@@ -10,7 +10,8 @@ import {
     Image,
     PermissionsAndroid,
     Platform,
-    Button
+    Button,
+    ActivityIndicator
   } from 'react-native';
   
   //import all the components we are going to use.
@@ -18,10 +19,10 @@ import {
 
 const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude, setCurrentLongitude}) => {
 
-  // console.log(location+"   "+ history);
     // const [currentLongitude, setCurrentLongitude] = useState('...');
     //   const [currentLatitude, setCurrentLatitude] = useState('...');
       const [ locationStatus, setLocationStatus ] = useState('');
+      const [ loading, setLoading ] = useState(true);
     
       useEffect(() => {
         const requestLocationPermission = async () => {
@@ -32,10 +33,7 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
             try {
               const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                  title: 'Location Access Required',
-                  message: 'This App needs to Access your location',
-                },
+               
               );
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 //To Check, If Permission is granted
@@ -104,7 +102,8 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
             setCurrentLatitude(currentLatitude);
           },
           (error) => {
-            setLocationStatus(error.message);
+            setLocationStatus(error.message+" Please Turn on your location");
+            setLoading(false) ;
           },
           {
             enableHighAccuracy: false,
@@ -137,7 +136,8 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
             setCurrentLatitude(currentLatitude);
           },
           (error) => {
-            setLocationStatus(error.message);
+            setLocationStatus(error.message+" Please Turn on your location");
+            setLoading(false) ;
           },
           {
             enableHighAccuracy: false,
@@ -146,12 +146,18 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
         );
       };
 
+      const onRefresh = () =>{
+        getOneTimeLocation();
+        subscribeLocationLocation();
+        setLoading(true);
+      }
+
 
     return (
-        <SafeAreaView style={{backgroundColor:'green',}}>
-        <View style={styles.container}>
+        <SafeAreaView >
+        <View style={{  padding: 20, marginVertical: 50}}>
           
-          <View style={styles.container}>
+          {/* <View style={styles.container}>
             <Image
               source={{
                 uri:
@@ -201,7 +207,16 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
               color: 'grey'
             }}>
             www.aboutreact.com
-          </Text>
+          </Text> */}
+
+          <Text style={styles.boldText}>
+              {locationStatus}
+            </Text>
+         <View>
+         {
+            loading ? <ActivityIndicator color='green' size="large"  />: <Button title="Refresh" onPress={onRefresh} />
+          }
+         </View>
         </View>
       </SafeAreaView>
   
@@ -216,9 +231,10 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     boldText: {
-      fontSize: 25,
-      color: 'red',
+      fontSize: 22,
+      color: 'green',
       marginVertical: 16,
+      textAlign:'center'
     },
   });
 

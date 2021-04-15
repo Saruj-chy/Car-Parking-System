@@ -9,26 +9,18 @@ import MapView, {Marker} from 'react-native-maps';
 import Appbar from '../Appbar/Appbar';
 import CurrentLocation from '../CurrentLocation/CurrentLocation';
 
-const GoogleMaps = () => {
+const GoogleMaps = ({location}) => {
+ const lat = parseFloat(location.state.latitude);
+ const long = parseFloat(location.state.longitude);
 
-//  console.log(JSON.stringify(location.state.latitude));
-//  const latNum =  location.state.latitude
-//  const Num =  location.state.latitude
-//  console.log(latNum);
-//  const lat = parseFloat(location.state.latitude);
-//  const long = parseFloat(location.state.longitude);
- const lat = 22.3557542;
- const long = 91.8419583;
  console.log(lat);
 
- 
 
 
   return (
     <SafeAreaView style={{height: '100%'}}>
      
       <View style={styles.container}>
-      <CurrentLocation  />
         <MapView
           style={styles.mapStyle}
           initialRegion={{

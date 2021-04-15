@@ -17,7 +17,7 @@ const RefreshScreen = ({location}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
+      {/* <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
           <RefreshControl
@@ -27,7 +27,7 @@ const RefreshScreen = ({location}) => {
         }
       >
         <Text>Pull down to see RefreshControl indicator</Text>
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 }
@@ -35,6 +35,7 @@ const RefreshScreen = ({location}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'red'
   },
   scrollView: {
     flex: 1,
