@@ -37,13 +37,7 @@ const LoginPage = ({history}) => {
       .then((response) => response.json())
       //If response is in json then in success
       .then((responseJson) => {        
-        // setUser(responseJson.user_exist);
-        // console.log(responseJson.user_exist);
-        if(responseJson.user_exist== true ){
-          history.push('/home');
-        }else{
-          console.log("no");
-        }
+        setUser(responseJson.user_exist);
       })
       //If response is not in json then in error
       .catch((error) => {
@@ -52,9 +46,18 @@ const LoginPage = ({history}) => {
       });
    
 
-     
+      if(user== true ){
+        history.push('/location');
+      }else{
+        console.log("no");
+      }
   
   };
+
+  const onGetUserExist = () =>{
+    console.log(user);
+    console.log(user.user_exist);
+  }
 
   return (
     <SafeAreaView>
@@ -80,6 +83,7 @@ const LoginPage = ({history}) => {
       /> */}
 
       <Button onPress={onSubmit} title="Submit" color="#841584" />
+      <Button onPress={onGetUserExist} title="User exist" color="#841584" />
     </SafeAreaView>
   );
 };

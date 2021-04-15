@@ -16,10 +16,11 @@ import {
   //import all the components we are going to use.
   import Geolocation from '@react-native-community/geolocation';
 
-const CurrentLocation = () => {
+const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude, setCurrentLongitude}) => {
 
-    const [currentLongitude, setCurrentLongitude] = useState('...');
-      const [currentLatitude, setCurrentLatitude] = useState('...');
+  // console.log(location+"   "+ history);
+    // const [currentLongitude, setCurrentLongitude] = useState('...');
+    //   const [currentLatitude, setCurrentLatitude] = useState('...');
       const [ locationStatus, setLocationStatus ] = useState('');
     
       useEffect(() => {
@@ -149,7 +150,8 @@ const CurrentLocation = () => {
     return (
         <SafeAreaView style={{backgroundColor:'green',}}>
         <View style={styles.container}>
-          <View style={styles.container}>
+          
+          {/* <View style={styles.container}>
             <Image
               source={{
                 uri:
@@ -183,7 +185,7 @@ const CurrentLocation = () => {
                 onPress={requestLocationPermission}
               />
             </View>
-          </View>
+          </View> */}
           <Text
             style={{
               fontSize: 18,

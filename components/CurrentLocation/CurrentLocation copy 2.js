@@ -16,47 +16,16 @@ import {
   //import all the components we are going to use.
   import Geolocation from '@react-native-community/geolocation';
 
-const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude, setCurrentLongitude}) => {
+const CurrentLocation = () => {
 
-  // console.log(location+"   "+ history);
-    // const [currentLongitude, setCurrentLongitude] = useState('...');
-    //   const [currentLatitude, setCurrentLatitude] = useState('...');
+    const [currentLongitude, setCurrentLongitude] = useState('...');
+      const [currentLatitude, setCurrentLatitude] = useState('...');
       const [ locationStatus, setLocationStatus ] = useState('');
     
-      useEffect(() => {
-        const requestLocationPermission = async () => {
-          if (Platform.OS === 'ios') {
-            getOneTimeLocation();
-            subscribeLocationLocation();
-          } else {
-            try {
-              const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                  title: 'Location Access Required',
-                  message: 'This App needs to Access your location',
-                },
-              );
-              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                //To Check, If Permission is granted
-                getOneTimeLocation();
-                subscribeLocationLocation();
-              } else {
-                setLocationStatus('Permission Denied');
-              }
-            } catch (err) {
-              console.warn(err);
-            }
-          }
-        };
-        requestLocationPermission();
-        return () => {
-          Geolocation.clearWatch(watchID);
-        };
-      }, []);
+     
 
       const requestLocationPermission = async () => {
-          console.log("requestLocationPermission");
+          // console.log("requestLocationPermission");
         if (Platform.OS === 'ios') {
           getOneTimeLocation();
           subscribeLocationLocation();
@@ -96,6 +65,8 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
             //getting the Latitude from the location json
             const currentLatitude = 
               JSON.stringify(position.coords.latitude);
+
+              console.log("location: "+ position.coords);
     
             //Setting Longitude state
             setCurrentLongitude(currentLongitude);
@@ -146,11 +117,11 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
         );
       };
 
+    
 
     return (
         <SafeAreaView style={{backgroundColor:'green',}}>
         <View style={styles.container}>
-          
           <View style={styles.container}>
             <Image
               source={{
@@ -184,6 +155,7 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
                 // onPress={getOneTimeLocation}
                 onPress={requestLocationPermission}
               />
+              
             </View>
           </View>
           <Text
@@ -200,7 +172,7 @@ const CurrentLocation = ({currentLatitude, currentLongitude, setCurrentLatitude,
               textAlign: 'center',
               color: 'grey'
             }}>
-            www.aboutreact.com
+            @copywrite to Sarose Datta 
           </Text>
         </View>
       </SafeAreaView>
