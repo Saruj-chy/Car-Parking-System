@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Button, View, Text, TouchableOpacity, Image} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -9,7 +9,6 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 var SharedPreferences = require('react-native-shared-preferences');
-
 
 // import {
 //   createDrawerNavigator,
@@ -230,7 +229,6 @@ function ReportScreenStack({navigation}) {
 }
 
 function EntranceScreenStack({navigation}) {
- 
   return (
     <Stack.Navigator initialRouteName="Entrance Screen">
       <Stack.Screen
@@ -255,30 +253,28 @@ function EntranceScreenStack({navigation}) {
 }
 
 function GoogleMapScreenStack({navigation}) {
-  
   return (
     <Stack.Navigator initialRouteName="Entrance Screen">
-     <Stack.Screen
+      <Stack.Screen
         name="Google Maps Screen"
         component={GoogleMapScreen}
-         options={{
-           title: 'Google Maps Screen', //Set Header Title
-           headerLeft: () => (
-             <NavigationDrawerStructure navigationProps={navigation} />
-           ),
-           headerStyle: {
-             backgroundColor: '#f4511e', //Set Header color
-           },
-           headerTintColor: '#0000FF', //Set Header text color //
-           headerTitleStyle: {
-             fontWeight: 'bold', //Set Header text style
-           },
-         }}
-       /> 
+        options={{
+          title: 'Google Maps Screen', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#f4511e', //Set Header color
+          },
+          headerTintColor: '#0000FF', //Set Header text color //
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 }
-
 
 function Root({navigation}) {
   return (
@@ -299,23 +295,26 @@ function Root({navigation}) {
         component={HomeScreenStack}
         options={{headerShown: false}}
       />
-      <Drawer.Screen
-          name="Entrance"
-          options={{drawerLabel: 'Entrance Screen', 
+      <Stack.Screen
+        name="Entrance"
+        options={{
+          drawerLabel: 'Entrance Screen',
+          headerShown: false,
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTitle:"Entrance Screen", 
+          headerTitle: 'Entrance Screen',
           headerRight: () => (
             <Button
               onPress={() => alert('This is a button!')}
               title="Info"
               color="black"
             />
-          ),}}
-          component={EntranceScreen}
-        />
-      
+          ),
+        }}
+        component={EntranceScreen}
+      />
+
       <Stack.Screen
         name="Registration"
         component={RegistrationScreen}
@@ -326,7 +325,7 @@ function Root({navigation}) {
         component={PracticeLogScreen}
         options={{headerShown: false}}
       />
-      
+
       <Stack.Screen
         name="GoogleMaps"
         component={GoogleMapScreen}
@@ -352,8 +351,6 @@ function Root({navigation}) {
 }
 
 const MainNavigationScreen = ({navigation}) => {
-
-  
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -429,7 +426,7 @@ const MainNavigationScreen = ({navigation}) => {
           options={{drawerLabel: 'Exit Screen', headerShown: false}}
           component={LoginScreen}
         />
-         <Drawer.Screen
+        <Drawer.Screen
           name="GoogleMaps"
           // options={{drawerLabel: 'History'}}
           component={GoogleMapScreenStack}
@@ -445,7 +442,6 @@ const MainNavigationScreen = ({navigation}) => {
           // options={{drawerLabel: 'History'}}
           component={HomeScreenStack}
         />
-       
       </Drawer.Navigator>
     </NavigationContainer>
   );

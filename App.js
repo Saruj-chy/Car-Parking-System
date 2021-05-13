@@ -1,6 +1,7 @@
 //  import 'react-native-gesture-handler';
 
 import React, {useState} from 'react';
+import EntranceScreen from './Components/EntranceScreen/EntranceScreen';
 import HomeScreen from './Components/HomeScreen/HomeScreen';
 import MainNavigationScreen from './Components/MainNavigationScreen/MainNavigationScreen';
 import MainRouteNavigate from './Components/MainRouteNavigate/MainRouteNavigate';
@@ -16,7 +17,7 @@ function App() {
 
     // <HomeScreen />
 
-    // <PracticeMapview />
+    // <EntranceScreen />
   );
 }
 
