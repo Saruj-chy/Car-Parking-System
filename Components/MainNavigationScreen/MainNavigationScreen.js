@@ -279,17 +279,20 @@ function GoogleMapScreenStack({navigation}) {
 function Root({navigation}) {
   return (
     <Stack.Navigator>
+
+      {/* //saruj change apply */}
+      {/* <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      /> */}
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreenStack}
         options={{headerShown: false}}
       />
 
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
+      
       <Stack.Screen
         name="Home"
         component={HomeScreenStack}
@@ -386,6 +389,7 @@ const MainNavigationScreen = ({navigation}) => {
             </DrawerContentScrollView>
           );
         }}>
+        
         <Drawer.Screen
           name="History"
           options={{drawerLabel: 'History'}}

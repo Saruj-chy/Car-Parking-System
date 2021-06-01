@@ -31,7 +31,7 @@ const RegistrationScreen = ({ navigation }) => {
     }
     formBody = formBody.join('&');
     
-    fetch('http://192.168.1.2/android/Bulbul_Sir_PHP/user_register.php', {
+    fetch('http://192.168.1.8/android/Bulbul_Sir_PHP/user_register.php', {
       method: 'POST', 
       body: formBody, 
       headers: {

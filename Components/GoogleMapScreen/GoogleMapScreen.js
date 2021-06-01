@@ -37,7 +37,7 @@ const GoogleMapScreen = ({navigation, route}) => {
         }
         formBody = formBody.join('&');
     
-        fetch('http://192.168.1.2/android/Bulbul_Sir_PHP/location_chack.php', {
+        fetch('http://192.168.1.8/android/Bulbul_Sir_PHP/location_chack.php', {
           method: 'POST',
           body: formBody,
           headers: {

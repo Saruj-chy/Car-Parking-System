@@ -35,7 +35,7 @@ const LoginScreen = ({navigation, route}) => {
     }
     formBody = formBody.join('&');
 
-    fetch('http://192.168.1.2/android/Bulbul_Sir_PHP/user_login.php', {
+    fetch('http://192.168.1.8/android/Bulbul_Sir_PHP/user_login.php', {
       method: 'POST',
       body: formBody,
       headers: {
