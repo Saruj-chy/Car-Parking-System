@@ -11,6 +11,8 @@ import {
   AlertIOS,
   View,
 } from 'react-native';
+import CurrentLatLong from '../CurrentLocationScreen/CurrentLatLong';
+import CurrentLocationScreen from '../CurrentLocationScreen/CurrentLocationScreen';
 import car_img from '../ImageFolder/smart_car_park.jpg';
 
 const LoginScreen = ({navigation, route}) => {
@@ -35,13 +37,18 @@ const LoginScreen = ({navigation, route}) => {
     }
     formBody = formBody.join('&');
 
-    fetch('http://192.168.1.8/android/Bulbul_Sir_PHP/user_login.php', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    fetch(
+      // 'http://192.168.1.8/android/Bulbul_Sir_PHP/user_login.php',
+      'https://snakes123.000webhostapp.com/bulbul_sir/user_login_bulbulsir.php',
+
+      {
+        method: 'POST',
+        body: formBody,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
       },
-    })
+    )
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.user_exist == true) {
@@ -68,8 +75,19 @@ const LoginScreen = ({navigation, route}) => {
     }
   };
 
+
+  //========================current location
+  const [currentLongitude, setCurrentLongitude] = useState('');
+  const [currentLatitude, setCurrentLatitude] = useState('');
+
   return (
     <SafeAreaView style={{flex: 1}}>
+      <CurrentLatLong
+        currentLatitude={currentLatitude}
+        currentLongitude={currentLongitude}
+        setCurrentLatitude={setCurrentLatitude}
+        setCurrentLongitude={setCurrentLongitude}
+      />
       <ImageBackground source={car_img} style={styles.image}>
         <View
           style={{

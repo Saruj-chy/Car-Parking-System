@@ -29,8 +29,8 @@ const HomeScreen = ({navigation}) => {
         console.log("\n HomeScreen currentLatitude in------------------------------:    "+currentLatitude)
         }
         <CurrentLocationScreen
-          currentLatitude={currentLatitude}
-          currentLongitude={currentLongitude}
+          // currentLatitude={currentLatitude}
+          // currentLongitude={currentLongitude}
           setCurrentLatitude={setCurrentLatitude}
           setCurrentLongitude={setCurrentLongitude}
         />

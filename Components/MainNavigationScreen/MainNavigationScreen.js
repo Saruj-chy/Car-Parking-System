@@ -10,12 +10,6 @@ import {
 } from '@react-navigation/drawer';
 var SharedPreferences = require('react-native-shared-preferences');
 
-// import {
-//   createDrawerNavigator,
-//   DrawerContentScrollView,
-//   DrawerItemList,
-// } from '@react-navigation/drawer';
-
 import HistoryScreen from '../HistoryScreen/HistoryScreen';
 import ProfileScreen from '../ProfileScreen/ProfileScreen';
 import MySpotsScreen from '../MySpotsScreen/MySpotsScreen';
@@ -30,8 +24,9 @@ import RegistrationScreen from '../RegistrationScreen/RegistrationScreen';
 import HomeScreen from '../HomeScreen/HomeScreen';
 import GoogleMapScreen from '../GoogleMapScreen/GoogleMapScreen';
 import PracticeLogScreen from '../PracticeLogScreen/PracticeLogScreen';
+import {ScreenContainer} from 'react-native-screens';
 
-// import DrawerItemScreen from '../DrawerItemScreen/DrawerItemScreen';
+import profile from '../ImageFolder/profile_png.png';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -163,6 +158,7 @@ function SignOutScreenStack({navigation}) {
       <Stack.Screen
         name="Sign Out"
         component={SignOutScreen}
+       
         options={{
           title: 'Sign Out', //Set Header Title
           headerLeft: () => (
@@ -279,20 +275,19 @@ function GoogleMapScreenStack({navigation}) {
 function Root({navigation}) {
   return (
     <Stack.Navigator>
-
       {/* //saruj change apply */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Login"
         component={LoginScreen}
         options={{headerShown: false}}
-      /> */}
-      <Stack.Screen
+      />
+
+      {/* <Stack.Screen
         name="HomeScreen"
         component={HomeScreenStack}
         options={{headerShown: false}}
-      />
+      /> */}
 
-      
       <Stack.Screen
         name="Home"
         component={HomeScreenStack}
@@ -359,7 +354,9 @@ const MainNavigationScreen = ({navigation}) => {
       <Drawer.Navigator
         initialRouteName="Root"
         drawerContentOptions={{
-          activeTintColor: '#e91e63',
+          activeTintColor: 'white',
+          activeBackgroundColor:'#5c0b2e',
+          inactiveTintColor:'white',
           itemStyle: {marginVertical: 5},
         }}
         drawerContent={props => {
@@ -384,15 +381,37 @@ const MainNavigationScreen = ({navigation}) => {
             },
           };
           return (
-            <DrawerContentScrollView {...filteredProps}>
+            <DrawerContentScrollView {...filteredProps} style={{backgroundColor:'#7a1841',}}>
+              <View>
+                <View
+                  style={{
+                    backgroundColor: '#5c0b2e',
+                    // height: 140,
+                    // alignItems: 'center',
+                    // justifyContent: 'center',
+                    paddingTop:10,
+                    paddingBottom:10,
+                    paddingLeft:10,
+                    
+                  }}>
+                  <View style={{display:'flex', flexDirection:'row', alignItems:'center',}}>
+                    <Image source={profile} style={{width:100,height:100, }} />
+                    <Text style={{fontSize:20, paddingLeft:10, fontWeight:'bold',  color:'white'}}>Sarose Datta</Text>
+                  </View>
+                  <View >
+                    <Text style={{fontSize:16,fontWeight:'bold',  color:'white'}}>+8801516174937</Text>
+                    <Text style={{fontSize:16,fontWeight:'bold',  color:'white'}}>sarose.datta.cu@gmail.com</Text>
+
+                  </View>
+                </View>
+              </View>
               <DrawerItemList {...filteredProps} />
             </DrawerContentScrollView>
           );
         }}>
-        
         <Drawer.Screen
           name="History"
-          options={{drawerLabel: 'History'}}
+          options={{drawerLabel: 'History', style:{ color:'white', backgroundColor:'red'} }}
           component={HistoryScreenStack}
         />
         <Drawer.Screen

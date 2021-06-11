@@ -1,11 +1,15 @@
 import React from 'react';
-import { Button, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
+
+import { BackHandler } from 'react-native';
 
 const SignOutScreen = () => {
+
     return (
         <View>
-        <Button title="My Spots Screen"> </Button>
-    </View>
+            <Button title="Sign Out" onPress={() => BackHandler.exitApp()} />
+
+        </View>
     );
 };
 

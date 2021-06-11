@@ -9,6 +9,7 @@ import MainRouteNavigate from './Components/MainRouteNavigate/MainRouteNavigate'
 import PracticeLogScreen from './Components/PracticeLogScreen/PracticeLogScreen';
 import PracticeMapview from './Components/PracticeMapView/PracticeMapview';
 import RegistrationScreen from './Components/RegistrationScreen/RegistrationScreen';
+import SignOutScreen from './Components/SignOutScreen/SignOutScreen';
 
 
 function App() {

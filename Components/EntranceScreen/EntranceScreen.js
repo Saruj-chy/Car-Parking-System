@@ -34,6 +34,9 @@ import Dialog, {
   ScaleAnimation,
 } from 'react-native-popup-dialog';
 
+import { BackHandler } from 'react-native';
+
+
 const arrowLeftIcon = parseIconFromClassName('fa fa-arrow-left');
 const sendIcon = parseIconFromClassName('fa fa-paper-plane');
 
@@ -109,7 +112,8 @@ const EntranceScreen = ({navigation, route}) => {
       }
       formBody = formBody.join('&');
       fetch(
-        'http://192.168.1.8/android/Bulbul_Sir_PHP/checkpoint_details.php',
+        // 'http://192.168.1.8/android/Bulbul_Sir_PHP/checkpoint_details.php',
+        'https://snakes123.000webhostapp.com/bulbul_sir/checkpoint_details_bulbulsir.php',
         {
           method: 'POST',
           body: formBody,
@@ -178,6 +182,22 @@ const EntranceScreen = ({navigation, route}) => {
     );
   });
 
+
+
+function handleBackButtonClick() {
+  console.log("backpressed");
+  setCancelbooking(true);
+  
+    return true;
+  }
+
+  const onBackOkPressed = () =>{
+    navigation.goBack() ;
+  }
+
+  BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+
+
   //=======================================================================================   default dialog
 
   return (
@@ -194,7 +214,7 @@ const EntranceScreen = ({navigation, route}) => {
         <FontAwesome
           style={{fontSize: 25, color: 'white', justifyContent: 'flex-end'}}
           icon={sendIcon}
-          onPress={() => setCancelbooking(true)}
+          onPress={() => setParkingSlot(true)}
         />
       </View>
 
@@ -427,6 +447,7 @@ const EntranceScreen = ({navigation, route}) => {
             <View style={{ alignItems:'flex-end' }}>
             <Text style={{color:'red', fontSize:20, paddingRight:20, paddingTop:20}}   onPress={() => {
                 setCancelbooking(false);
+                onBackOkPressed() ;
               }} >Ok</Text>
             </View>
           </View>

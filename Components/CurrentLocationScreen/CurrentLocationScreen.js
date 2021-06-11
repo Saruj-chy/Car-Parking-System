@@ -19,7 +19,7 @@ import {
   var SharedPreferences = require('react-native-shared-preferences');
 
 
-const CurrentLocationScreen = ({currentLatitude, currentLongitude, setCurrentLatitude, setCurrentLongitude}) => {
+const CurrentLocationScreen = ({setCurrentLatitude, setCurrentLongitude}) => {
 
   console.log('CurrentLocationScreen   in here');
     // const [currentLongitude, setCurrentLongitude] = useState('...');

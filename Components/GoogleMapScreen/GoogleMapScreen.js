@@ -37,7 +37,10 @@ const GoogleMapScreen = ({navigation, route}) => {
         }
         formBody = formBody.join('&');
     
-        fetch('http://192.168.1.8/android/Bulbul_Sir_PHP/location_chack.php', {
+        fetch(
+          // 'http://192.168.1.8/android/Bulbul_Sir_PHP/location_chack.php',
+          'https://snakes123.000webhostapp.com/bulbul_sir/location_check_bulbulsir.php',
+           {
           method: 'POST',
           body: formBody,
           headers: {
@@ -135,7 +138,8 @@ const onLocationPickPress = (id) =>{
        
         
         {
-          currentLatitude!=0 && <MapView
+          currentLatitude!=0 && 
+          <MapView
           style={styles.mapStyle}
           initialRegion={{
             latitude: lat,
