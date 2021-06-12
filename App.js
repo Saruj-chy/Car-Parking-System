@@ -1,37 +1,36 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-// import CurrentLocation from './components/CurrentLocation/CurrentLocation';
-import CurrentLocation from './components/CurrentLocation/CurrentLocation';
-import GoogleMaps from './components/GoogleMaps/GoogleMaps';
-import LoginPage from './components/LoginPage/LoginPage';
-import { NativeRouter, Route, Link, Switch } from "react-router-native";
-import Home from './components/Home/Home';
-import RefreshScreen from './components/RefreshScreen/RefreshScreen';
+//  import 'react-native-gesture-handler';
 
-const App = () => {
+import React, {useState} from 'react';
+import EntranceScreen from './Components/EntranceScreen/EntranceScreen';
+import GoogleMapScreen from './Components/GoogleMapScreen/GoogleMapScreen';
+import HomeScreen from './Components/HomeScreen/HomeScreen';
+import MainNavigationScreen from './Components/MainNavigationScreen/MainNavigationScreen';
+import MainRouteNavigate from './Components/MainRouteNavigate/MainRouteNavigate';
+import PracticeLogScreen from './Components/PracticeLogScreen/PracticeLogScreen';
+import PracticeMapview from './Components/PracticeMapView/PracticeMapview';
+import RegistrationScreen from './Components/RegistrationScreen/RegistrationScreen';
+import SignOutScreen from './Components/SignOutScreen/SignOutScreen';
+
+
+function App() {
   return (
-    <NativeRouter>
-      <View style={styles.container}>
-        <Switch>
-          <Route exact path="/" component={LoginPage} />
-          {/* <Route exact path="/login" component={LoginPage} /> */}
-          <Route exact path="/googlemaps" component={GoogleMaps} />
-          <Route exact path="/location" component={CurrentLocation} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/refresh" component={RefreshScreen} />
-        </Switch>
-      </View>
-    </NativeRouter>
-  );
-};
+    <MainNavigationScreen />
 
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#b4b4b4',
-    },
-  
-  });
+
+    // <RegistrationScreen />
+    // <MainRouteNavigate />
+
+    // <HomeScreen />
+
+    // <EntranceScreen />
+    // <PracticeLogScreen />
+
+
+    
+    );
+}
 
 export default App;
+
+//#0000FF   blue color
