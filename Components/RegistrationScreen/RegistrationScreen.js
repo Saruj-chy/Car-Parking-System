@@ -107,7 +107,7 @@ const RegistrationScreen = ({navigation}) => {
             marginTop: 20,
           }}>
           <Text style={{fontSize: 24, color: 'yellow'}}>
-            Smart Car Parkingg System
+            Smart Car Parking System
           </Text>
           <Text style={{fontSize: 24, color: '#99ff33'}}>(SCPS)</Text>
           <Text style={{fontSize: 25, color: '#ff0000'}}>Sign Up</Text>
