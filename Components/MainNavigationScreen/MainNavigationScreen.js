@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-alert */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
 import {Button, View, Text, TouchableOpacity, Image} from 'react-native';
 
@@ -392,7 +396,6 @@ const MainNavigationScreen = ({navigation}) => {
                     paddingTop:10,
                     paddingBottom:10,
                     paddingLeft:10,
-                    
                   }}>
                   <View style={{display:'flex', flexDirection:'row', alignItems:'center',}}>
                     <Image source={profile} style={{width:100,height:100, }} />

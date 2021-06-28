@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 // AIzaSyAbCCIit-DfRCpTXRaCzfHi1AQUsqRjVK4
 import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
@@ -10,15 +11,15 @@ const GoogleMapScreen = ({navigation, route}) => {
 
   let count = 0;
   const[latlong, setLatLong] = useState([]);
-   
+
   const [currentLongitude, setCurrentLongitude] = useState('');
   const [currentLatitude, setCurrentLatitude] = useState('');
 
   useEffect(()=>{
-    
+
     SharedPreferences.getItems(["lat","long"], function(values){
-  
-     
+
+
       console.log(values[0]+"    "+ values[1]);
       setCurrentLatitude(values[0]);
       setCurrentLongitude(values[1]);
@@ -36,7 +37,7 @@ const GoogleMapScreen = ({navigation, route}) => {
           formBody.push(encodedKey + '=' + encodedValue);
         }
         formBody = formBody.join('&');
-    
+
         fetch(
           // 'http://192.168.1.8/android/Bulbul_Sir_PHP/location_chack.php',
           'https://snakes123.000webhostapp.com/bulbul_sir/location_check_bulbulsir.php',
@@ -52,7 +53,7 @@ const GoogleMapScreen = ({navigation, route}) => {
             if (responseJson.error == false) {
               console.log(responseJson.data);
               setLatLong(responseJson.data) ;
-            
+
             } else {
               console.log("error:   "+ responseJson.error);
             }
@@ -62,7 +63,7 @@ const GoogleMapScreen = ({navigation, route}) => {
             console.error("error in:"+ error);
           });
       }
-    
+
 
 
 
@@ -83,7 +84,6 @@ const GoogleMapScreen = ({navigation, route}) => {
 
 
 
-    
 
 
 
@@ -100,23 +100,17 @@ const GoogleMapScreen = ({navigation, route}) => {
 
 
 
-   
+
+
 
   }, [])
 
-  // console.log("currentLongitude:  "+currentLongitude+"   currentLatitude:  "+currentLatitude);
 
   console.log(" currentLatitude:  "+  currentLatitude);
  const lat = parseFloat(currentLatitude);
  const long = parseFloat(currentLongitude);
 
 
-
-
-
-//  const lats = parseFloat(route.params.latitude);
-//  const long = parseFloat(route.params.longitude);
-// console.log("lats: "+lats);
 
 const onLocationPickPress = (id) =>{
   console.log('location press in here'+ count);
@@ -133,12 +127,12 @@ const onLocationPickPress = (id) =>{
 
   return (
     <SafeAreaView style={{height: '100%'}}>
-     
+
       <View style={styles.container}>
-       
-        
+
+
         {
-          currentLatitude!=0 && 
+          currentLatitude!=0 &&
           <MapView
           style={styles.mapStyle}
           initialRegion={{
@@ -162,56 +156,13 @@ const onLocationPickPress = (id) =>{
                 title={item.title}
                 description={item.description}
                 onPress={() => onLocationPickPress(item.location_id)}
-                
+
 
 
               />  )
-              
+
             }
 
-
-
-
-
-
-
-          {/* <Marker
-            draggable
-            coordinate={{
-              latitude: lat-0.05,
-              longitude: long-0.05,
-            }}
-            onDragEnd={
-              (e) => alert(JSON.stringify(e.nativeEvent.coordinate))
-            }
-            title={' Current Location 2'}
-            description={'This is a description of the marker'}
-            onPress={() => alert('hello')}
-          />
-          <Marker
-            draggable
-            coordinate={{
-              latitude: lat,
-              longitude: long,
-            }}
-            onDragEnd={
-              (e) => alert(JSON.stringify(e.nativeEvent.coordinate))
-            }
-            title={'Current Location'}
-            description={'This is a description of the marker'}
-          /> */}
-          {/* <Marker
-            draggable
-            coordinate={{
-              latitude: 22.3738,
-              longitude: 91.7734,
-            }}
-            onDragEnd={
-              (e) => alert(JSON.stringify(e.nativeEvent.coordinate))
-            }
-            title={'Citygate'}
-            description={'This is a description of the marker'}
-          /> */}
         </MapView>
         }
       </View>

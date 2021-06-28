@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 //  import 'react-native-gesture-handler';
 
 import React, {useState} from 'react';
@@ -27,7 +29,6 @@ function App() {
     // <PracticeLogScreen />
 
 
-    
     );
 }
 

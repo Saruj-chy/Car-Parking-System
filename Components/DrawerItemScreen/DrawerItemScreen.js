@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import FirstPage from '../FirstPage/FirstPage';
 import {createDrawerNavigator} from '@react-navigation/drawer';
