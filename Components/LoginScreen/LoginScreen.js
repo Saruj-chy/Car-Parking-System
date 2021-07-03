@@ -48,11 +48,13 @@ const LoginScreen = ({navigation, route}) => {
 
   const onRegistrationScreen = () => {
     navigation.navigate('Root', {screen: 'Registration'});
+
   };
 
 
 
   const onLoginScreen = () => {
+    navigation.navigate('Root', {screen: 'Home'});
 
     console.log(currentLongitude+" currentLongitude  "+ currentLatitude);
 
