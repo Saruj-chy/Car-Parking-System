@@ -1,9 +1,11 @@
+/* eslint-disable no-trailing-spaces */
 // https://fontawesome.com/v4.7.0/icons/
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,7 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {RadioButton} from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 
 import blue_car from '../ImageFolder/blue_car_top.png';
 import white_car from '../ImageFolder/white_car_top.png';
@@ -40,70 +42,20 @@ import { BackHandler } from 'react-native';
 const arrowLeftIcon = parseIconFromClassName('fa fa-arrow-left');
 const sendIcon = parseIconFromClassName('fa fa-paper-plane');
 
-const EntranceScreen = ({navigation, route}) => {
+const EntranceScreen = ({ navigation, route }) => {
   const [locationDetails, setLocationDetails] = useState({});
+  const [totalParking, setTotalParking] = useState([]);
+  const [arrayFirst, setArrayFirst] = useState([]);
+  const [arraySecond, setArraySecond] = useState([]);
+  const [arrayThird, setArrayThird] = useState([]);
+  const [arrayFourth, setArrayFourth] = useState([]);
 
-  const ArrayFirst = [
-    {id: 1, slot_name: 'img_1', slot_color: 'blue'},
-    {id: 2, slot_name: 'img_2', slot_color: 'blue'},
-    {id: 3, slot_name: 'img_3', slot_color: 'blue'},
-    {id: 4, slot_name: 'img_4', slot_color: 'blue'},
-    {id: 5, slot_name: 'img_5', slot_color: 'blue'},
-    {id: 6, slot_name: 'img_6', slot_color: 'blue'},
-    {id: 7, slot_name: 'img_7', slot_color: 'blue'},
-    {id: 8, slot_name: 'img_8', slot_color: 'blue'},
-    {id: 9, slot_name: 'img_9', slot_color: 'blue'},
-    {id: 10, slot_name: 'img_10', slot_color: 'blue'},
-    {id: 11, slot_name: 'img_11', slot_color: 'blue'},
-    {id: 12, slot_name: 'img_12', slot_color: 'blue'},
-  ];
-  const ArraySecond = [
-    {id: 1, slot_name: 'img_1', slot_color: 'white'},
-    {id: 2, slot_name: 'img_2', slot_color: 'red'},
-    {id: 3, slot_name: 'img_3', slot_color: 'white'},
-    {id: 4, slot_name: 'img_4', slot_color: 'white'},
-    {id: 5, slot_name: 'img_5', slot_color: 'white'},
-    {id: 6, slot_name: 'img_6', slot_color: 'white'},
-    {id: 7, slot_name: 'img_7', slot_color: 'red'},
-    {id: 8, slot_name: 'img_8', slot_color: 'white'},
-    {id: 9, slot_name: 'img_9', slot_color: 'white'},
-    {id: 10, slot_name: 'img_10', slot_color: 'red'},
-    {id: 11, slot_name: 'img_11', slot_color: 'white'},
-    {id: 12, slot_name: 'img_12', slot_color: 'white'},
-  ];
-  const ArrayThird = [
-    {id: 1, slot_name: 'img_1', slot_color: 'white'},
-    {id: 2, slot_name: 'img_2', slot_color: 'white'},
-    {id: 3, slot_name: 'img_3', slot_color: 'red'},
-    {id: 4, slot_name: 'img_4', slot_color: 'white'},
-    {id: 5, slot_name: 'img_5', slot_color: 'red'},
-    {id: 6, slot_name: 'img_6', slot_color: 'white'},
-    {id: 7, slot_name: 'img_7', slot_color: 'white'},
-    {id: 8, slot_name: 'img_8', slot_color: 'white'},
-    {id: 9, slot_name: 'img_9', slot_color: 'white'},
-    {id: 10, slot_name: 'img_10', slot_color: 'white'},
-    {id: 11, slot_name: 'img_11', slot_color: 'white'},
-    {id: 12, slot_name: 'img_12', slot_color: 'white'},
-  ];
-  const ArrayFourth = [
-    {id: 1, slot_name: 'img_1', slot_color: 'white'},
-    {id: 2, slot_name: 'img_2', slot_color: 'red'},
-    {id: 3, slot_name: 'img_3', slot_color: 'white'},
-    {id: 4, slot_name: 'img_4', slot_color: 'white'},
-    {id: 5, slot_name: 'img_5', slot_color: 'white'},
-    {id: 6, slot_name: 'img_6', slot_color: 'white'},
-    {id: 7, slot_name: 'img_7', slot_color: 'red'},
-    {id: 8, slot_name: 'img_8', slot_color: 'white'},
-    {id: 9, slot_name: 'img_9', slot_color: 'white'},
-    {id: 10, slot_name: 'img_10', slot_color: 'red'},
-    {id: 11, slot_name: 'img_11', slot_color: 'white'},
-    {id: 12, slot_name: 'img_12', slot_color: 'white'},
-  ];
 
   useEffect(() => {
     if (route.params) {
       console.log(' route id: ' + route.params.id);
-      var dataToSend = {location_id: route.params.id};
+      var dataToSend = { location_id: route.params.id };
+      console.log(dataToSend);
       var formBody = [];
       for (var key in dataToSend) {
         var encodedKey = encodeURIComponent(key);
@@ -112,7 +64,6 @@ const EntranceScreen = ({navigation, route}) => {
       }
       formBody = formBody.join('&');
       fetch(
-        // 'http://192.168.1.8/android/Bulbul_Sir_PHP/checkpoint_details.php',
         'https://snakes123.000webhostapp.com/bulbul_sir/checkpoint_details_bulbulsir.php',
         {
           method: 'POST',
@@ -146,15 +97,142 @@ const EntranceScreen = ({navigation, route}) => {
           // alert(JSON.stringify(error));
           console.error(error);
         });
+
+      //==============================     parking total slot
+      getTotalParkingSlot(formBody);
+      // getBookingParkingSlot(formBody);
+
+
+
     }
   }, []);
+
+  const getTotalParkingSlot = (formBody) => {
+    console.log('data load from network');
+    fetch(
+      'https://snakes123.000webhostapp.com/bulbul_sir/get_total_parking_slot.php',
+      {
+        method: 'POST',
+        body: formBody,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+      },
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.error == false) {
+          // const checkPointDetails = {
+          //   error: responseJson.error,
+          //   data: responseJson.data,
+
+          // };
+          console.log(responseJson.error);
+          console.log(responseJson.data);
+          setTotalParking(responseJson.data);
+
+          getBookingParkingSlot(formBody, responseJson.data);
+
+
+
+
+        } else {
+          console.log(responseJson.error);
+        }
+      })
+      .catch(error => {
+        // alert(JSON.stringify(error));
+        console.error(error);
+      });
+
+  };
+  const getBookingParkingSlot = (formBody, totalParkingJson) => {
+    fetch(
+      'https://snakes123.000webhostapp.com/bulbul_sir/get_booked_slot_details.php',
+      {
+        method: 'POST',
+        body: formBody,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        },
+      },
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson.error == false) {
+
+          console.log(responseJson.data);
+          // setTotalParking(responseJson.data);
+
+          distributeData(totalParkingJson, responseJson.data);
+
+
+        } else {
+          console.log(responseJson.error);
+        }
+      })
+      .catch(error => {
+        // alert(JSON.stringify(error));
+        console.error(error);
+      });
+
+  };
+
+
+  const distributeData = (totalParkingJson, parkBokingJson) => {
+
+
+    totalParkingJson.map(item => {
+
+      var list1 = [];
+      var list2 = [];
+      var list3 = [];
+      var list4 = [];
+
+
+      for (var i = 1; i <= parseInt(item.total_slot); i++) {
+
+        var status = "unbooked";
+        parkBokingJson.filter(fi => fi.slot_numb == i).map(i => {
+          console.log(i.status);
+          status = "booked";
+        });
+
+        var obj = {
+          "slot_numb": i,
+          "status": status
+        };
+
+
+        if (i % 4 == 1) {
+          list1.push(obj);
+        } else if (i % 4 == 2) {
+          list2.push(obj);
+        } else if (i % 4 == 3) {
+          list3.push(obj);
+        } else if (i % 4 == 0) {
+          list4.push(obj);
+        }
+      }
+
+      setArrayFirst(list1);
+      setArraySecond(list2);
+      setArrayThird(list3);
+      setArrayFourth(list4);
+    });
+
+  };
+
+
+
+
 
   const onParkMyCarClick = () => {
     console.log('park my car click');
     // navigation.navigate('Park my Car', { params: {number: '123456' } }   );
     navigation.jumpTo('Root', {
       screen: 'LogScreen',
-      params: {number: '123456'},
+      params: { number: '123456' },
     });
   };
 
@@ -163,6 +241,9 @@ const EntranceScreen = ({navigation, route}) => {
     console.log('navigate back pressed');
   };
 
+
+
+
   //=======================================================================================   default dialog
   const [parkingSlot, setParkingSlot] = useState(false);
   const [reportDialog, setReportDialog] = useState(false);
@@ -170,13 +251,13 @@ const EntranceScreen = ({navigation, route}) => {
   const [cancelBooking, setCancelbooking] = useState(false);
 
   const checkboxes = [
-    {id: 1, checked: false, title: 'checked 1'},
-    {id: 2, checked: false, title: 'checked 2'},
-    {id: 3, checked: false, title: 'checked 3'},
+    { id: 1, checked: false, title: 'checked 1' },
+    { id: 2, checked: false, title: 'checked 2' },
+    { id: 3, checked: false, title: 'checked 3' },
   ];
   const checBoxesView = checkboxes.map((cb, index) => {
     return (
-      <View style={{flexDirection: 'row'}}>
+      <View style={{ flexDirection: 'row' }}>
         <Text>{cb.title}</Text>
       </View>
     );
@@ -184,15 +265,15 @@ const EntranceScreen = ({navigation, route}) => {
 
 
 
-function handleBackButtonClick() {
-  console.log("backpressed");
-  setCancelbooking(true);
-  
+  function handleBackButtonClick() {
+    console.log("backpressed");
+    setCancelbooking(true);
+
     return true;
   }
 
-  const onBackOkPressed = () =>{
-    navigation.goBack() ;
+  const onBackOkPressed = () => {
+    navigation.goBack();
   }
 
   BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
@@ -204,15 +285,15 @@ function handleBackButtonClick() {
     <View style={styles.container}>
       <View style={styles.view_top}>
         <FontAwesome
-          style={{fontSize: 32, color: 'white'}}
+          style={{ fontSize: 32, color: 'white' }}
           icon={arrowLeftIcon}
           onPress={onClick}
         />
-        <Text style={{color: 'white', fontSize: 20}}>
+        <Text style={{ color: 'white', fontSize: 20 }}>
           Choose Available Slot
         </Text>
         <FontAwesome
-          style={{fontSize: 25, color: 'white', justifyContent: 'flex-end'}}
+          style={{ fontSize: 25, color: 'white', justifyContent: 'flex-end' }}
           icon={sendIcon}
           onPress={() => setParkingSlot(true)}
         />
@@ -222,55 +303,74 @@ function handleBackButtonClick() {
         <ScrollView>
           <View style={styles.top}>
             <View style={[styles.body_left_item]}>
-              {ArrayFirst.map(item => (
-                <View style={styles.item_fixed_border}>
-                  <Image source={blue_car} style={styles.tinyLogo} />
-                </View>
+              {arrayFirst.map(item => (
+                <Pressable
+                  onPress={() => console.log('press id:' + item)}
+                  style={styles.item_fixed_border}>
+                  {
+                    item.status === "unbooked" ? <Image source={blue_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
+                  }
+                </Pressable>
               ))}
+
+
             </View>
             <View style={styles.body_middle_item}>
-              <View style={{flex: 0.5, alignItems: 'flex-end'}}>
-                {ArraySecond.map(item => (
-                  <View style={styles.item_fixed_border}>
-                    {item.slot_color === 'red' ? (
-                      <Image source={red_car} style={styles.tinyLogo} />
-                    ) : (
-                      <Image source={white_car} style={styles.tinyLogo} />
-                    )}
-                  </View>
+              <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
+                {
+                  console.log(arraySecond)
+                }
+
+                {arraySecond.map(item => (
+                  <Pressable
+                    onPress={() => console.log('press id:' + item)}
+                    style={styles.item_fixed_border}>
+                    {
+                      item.status === "unbooked" ? <Image source={white_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
+                    }
+                  </Pressable>
                 ))}
+
+
+
               </View>
-              <View style={{flex: 0.5, alignItems: 'flex-start'}}>
-                {ArrayThird.map(item => (
-                  <View style={styles.item_fixed_border}>
-                    {item.slot_color === 'red' ? (
-                      <Image source={red_car} style={styles.tinyLogo} />
-                    ) : (
-                      <Image source={white_car} style={styles.tinyLogo} />
-                    )}
-                  </View>
+              <View style={{ flex: 0.5, alignItems: 'flex-start' }}>
+
+
+                {arrayThird.map(item => (
+                  <Pressable
+                    onPress={() => console.log('press id:' + item)}
+                    style={styles.item_fixed_border}>
+                    {
+                      item.status === "unbooked" ? <Image source={white_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
+                    }
+                  </Pressable>
                 ))}
+
               </View>
             </View>
             <View style={styles.body_right_item}>
-              {ArrayFourth.map(item => (
-                <View style={styles.item_fixed_border}>
-                  {item.slot_color === 'red' ? (
-                    <Image source={red_car} style={styles.tinyLogo} />
-                  ) : (
-                    <Image source={white_car} style={styles.tinyLogo} />
-                  )}
-                </View>
+
+
+              {arrayFourth.map(item => (
+                <Pressable
+                  onPress={() => console.log('press id:' + item)}
+                  style={styles.item_fixed_border}>
+                  {
+                    item.status === "unbooked" ? <Image source={white_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
+                  }
+                </Pressable>
               ))}
+
             </View>
           </View>
         </ScrollView>
       </View>
 
       <View style={styles.view_below}>
-        <Text style={{color: 'white'}}>Total: {locationDetails.total} </Text>
-        <Text style={{color: 'white'}}>Empty: {locationDetails.free} </Text>
-        <Text style={{color: 'white'}}>
+        <Text style={{ color: 'white' }}>Total: {locationDetails.total} </Text>
+        <Text style={{ color: 'white' }}>Empty: {locationDetails.free} </Text>
+        <Text style={{ color: 'white' }}>
           Reserved: {locationDetails.booked}{' '}
         </Text>
       </View>
@@ -303,14 +403,14 @@ function handleBackButtonClick() {
               onPress={() => {
                 setParkingSlot(false);
               }}
-              style={{backgroundColor: 'lightgray'}}
+              style={{ backgroundColor: 'lightgray' }}
             />
             <DialogButton
               text="Ok"
               onPress={() => {
                 setParkingSlot(false);
               }}
-              style={{backgroundColor: 'lightgray'}}
+              style={{ backgroundColor: 'lightgray' }}
             />
           </DialogFooter>
         }>
@@ -364,14 +464,14 @@ function handleBackButtonClick() {
               onPress={() => {
                 setReportDialog(false);
               }}
-              // style={{backgroundColor: 'lightgray'}}
+            // style={{backgroundColor: 'lightgray'}}
             />
             <DialogButton
               text="Submit"
               onPress={() => {
                 setReportDialog(false);
               }}
-              // style={{backgroundColor: 'lightgray'}}
+            // style={{backgroundColor: 'lightgray'}}
             />
           </DialogFooter>
         }>
@@ -383,19 +483,19 @@ function handleBackButtonClick() {
             onValueChange={newValue => setReport(newValue)}
             value={report}>
             <View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="1" />
                 <Text> Another car is parked </Text>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="2" />
                 <Text> Place is too small to park </Text>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="3" />
                 <Text> Place is not clean </Text>
               </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="4" />
                 <Text> Others </Text>
               </View>
@@ -412,7 +512,7 @@ function handleBackButtonClick() {
 
 
 
-{/*-------------------                       Cancel booking dialog view            ---------------------------*/}
+      {/*-------------------                       Cancel booking dialog view            ---------------------------*/}
       {/* -----------------                      for  dialog view, it active when send btn click                ---------------------*/}
 
       <Dialog
@@ -430,7 +530,7 @@ function handleBackButtonClick() {
             align="left"
           />
         }
-       >
+      >
         <DialogContent
           style={{
             backgroundColor: '#F7F7F8',
@@ -444,10 +544,10 @@ function handleBackButtonClick() {
               }}>
               Do you want to cancel this booking ?
             </Text>
-            <View style={{ alignItems:'flex-end' }}>
-            <Text style={{color:'red', fontSize:20, paddingRight:20, paddingTop:20}}   onPress={() => {
+            <View style={{ alignItems: 'flex-end' }}>
+              <Text style={{ color: 'red', fontSize: 20, paddingRight: 20, paddingTop: 20 }} onPress={() => {
                 setCancelbooking(false);
-                onBackOkPressed() ;
+                onBackOkPressed();
               }} >Ok</Text>
             </View>
           </View>

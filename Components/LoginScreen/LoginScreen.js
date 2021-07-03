@@ -1,4 +1,12 @@
+/* eslint-disable no-undef */
+/* eslint-disable semi */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
+
 import React, {useState} from 'react';
+import { NativeModules } from "react-native";
+
 import {
   Button,
   ImageBackground,
@@ -12,10 +20,26 @@ import {
   View,
 } from 'react-native';
 import CurrentLatLong from '../CurrentLocationScreen/CurrentLatLong';
+import Testing from '../Testing/Testing';
 import CurrentLocationScreen from '../CurrentLocationScreen/CurrentLocationScreen';
 import car_img from '../ImageFolder/smart_car_park.jpg';
 
+
+import Geolocation from '@react-native-community/geolocation';
+var SharedPreferences = require('react-native-shared-preferences');
+
+
+
+
+
 const LoginScreen = ({navigation, route}) => {
+  //========================current location
+  const [currentLongitude, setCurrentLongitude] = useState('');
+  const [currentLatitude, setCurrentLatitude] = useState('');
+
+
+
+
   // const {state} = navigation;
   // console.log('PROPS' + route.params.user);
 
@@ -24,11 +48,55 @@ const LoginScreen = ({navigation, route}) => {
 
   const onRegistrationScreen = () => {
     navigation.navigate('Root', {screen: 'Registration'});
+
   };
 
+
+
   const onLoginScreen = () => {
-    console.log(userName + '  ' + password);
-    var dataToSend = {username: userName, password: password};
+    navigation.navigate('Root', {screen: 'Home'});
+
+    console.log(currentLongitude+" currentLongitude  "+ currentLatitude);
+
+
+    if (
+      userName.length <= 0 ||
+      password.length <= 0
+    ) {
+      console.log('please proveide actual value');
+      notifyMessage('please proveide actual value');
+      return;
+    }else if( currentLatitude.length <=0 ) {
+      console.log('please turn on location');
+      notifyMessage('please turn on location');
+      // NativeModules.DevSettings.reload();
+      Geolocation.getCurrentPosition(
+        //Will give you the current location
+        (position) => {
+          const currentLongitude =  JSON.stringify(position.coords.longitude);
+          const currentLatitude =   JSON.stringify(position.coords.latitude);
+
+          setCurrentLatitude(currentLatitude) ;
+          setCurrentLongitude(currentLongitude) ;
+          SharedPreferences.setItem("lat", currentLatitude );
+          SharedPreferences.setItem("long", currentLongitude );
+
+
+         }, (error) => alert("Please turn on your location"), {
+           enableHighAccuracy: true, timeout: 20000, maximumAge: 1000
+         }
+      );
+
+
+      return;
+    }
+
+
+    var dataToSend =
+    {
+      username: userName,
+      password: password
+    };
     var formBody = [];
     for (var key in dataToSend) {
       var encodedKey = encodeURIComponent(key);
@@ -45,6 +113,7 @@ const LoginScreen = ({navigation, route}) => {
         method: 'POST',
         body: formBody,
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
         },
       },
@@ -65,6 +134,10 @@ const LoginScreen = ({navigation, route}) => {
         // alert(JSON.stringify(error));
         console.error(error);
       });
+
+
+
+
   };
 
   const notifyMessage = msg => {
@@ -76,15 +149,12 @@ const LoginScreen = ({navigation, route}) => {
   };
 
 
-  //========================current location
-  const [currentLongitude, setCurrentLongitude] = useState('');
-  const [currentLatitude, setCurrentLatitude] = useState('');
+
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <CurrentLatLong
-        currentLatitude={currentLatitude}
-        currentLongitude={currentLongitude}
+
         setCurrentLatitude={setCurrentLatitude}
         setCurrentLongitude={setCurrentLongitude}
       />
