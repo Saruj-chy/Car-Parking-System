@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable no-undef */
 /* eslint-disable semi */
 /* eslint-disable react-native/no-inline-styles */
@@ -6,6 +7,8 @@
 
 import React, {useState} from 'react';
 import { NativeModules } from "react-native";
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+
 
 import {
   Button,
@@ -16,6 +19,7 @@ import {
   Text,
   TextInput,
   ToastAndroid,
+  PermissionsAndroid,
   AlertIOS,
   View,
 } from 'react-native';
@@ -26,38 +30,43 @@ import car_img from '../ImageFolder/smart_car_park.jpg';
 
 
 import Geolocation from '@react-native-community/geolocation';
+import { useEffect } from 'react/cjs/react.development';
+import { USER_LOGIN } from '../Constants/Constants';
 var SharedPreferences = require('react-native-shared-preferences');
 
 
 
 
 
-const LoginScreen = ({navigation, route}) => {
+const LoginScreen = ({navigation, route, history}) => {
   //========================current location
   const [currentLongitude, setCurrentLongitude] = useState('');
   const [currentLatitude, setCurrentLatitude] = useState('');
+  const [turnOnLocation, setTurnOnLocation] = useState(false);
 
 
-
-
-  // const {state} = navigation;
-  // console.log('PROPS' + route.params.user);
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
+  // useEffect(() => {
+  //   geoLocationPick() ;
+  //   subscribeLocationLocation();
+  // }, []);
+
+
+
+
+
   const onRegistrationScreen = () => {
-    navigation.navigate('Root', {screen: 'Registration'});
+    history.push('/registration')
 
   };
 
 
 
   const onLoginScreen = () => {
-    navigation.navigate('Root', {screen: 'Home'});
-
-    console.log(currentLongitude+" currentLongitude  "+ currentLatitude);
-
+    // console.log('on login screen'+currentLatitude.length);
 
     if (
       userName.length <= 0 ||
@@ -68,24 +77,19 @@ const LoginScreen = ({navigation, route}) => {
       return;
     }else if( currentLatitude.length <=0 ) {
       console.log('please turn on location');
-      notifyMessage('please turn on location');
+      if(turnOnLocation){
+        notifyMessage('please wait some seconds');
+      }else{
+        notifyMessage('please turn on location');
+      }
+
       // NativeModules.DevSettings.reload();
-      Geolocation.getCurrentPosition(
-        //Will give you the current location
-        (position) => {
-          const currentLongitude =  JSON.stringify(position.coords.longitude);
-          const currentLatitude =   JSON.stringify(position.coords.latitude);
 
-          setCurrentLatitude(currentLatitude) ;
-          setCurrentLongitude(currentLongitude) ;
-          SharedPreferences.setItem("lat", currentLatitude );
-          SharedPreferences.setItem("long", currentLongitude );
+      Geolocation.clearWatch(watchID);
+      geoLocationPick(false) ;
+      subscribeLocationLocation() ;
 
-
-         }, (error) => alert("Please turn on your location"), {
-           enableHighAccuracy: true, timeout: 20000, maximumAge: 1000
-         }
-      );
+      // requestLocationPermission() ;
 
 
       return;
@@ -107,7 +111,7 @@ const LoginScreen = ({navigation, route}) => {
 
     fetch(
       // 'http://192.168.1.8/android/Bulbul_Sir_PHP/user_login.php',
-      'https://snakes123.000webhostapp.com/bulbul_sir/user_login_bulbulsir.php',
+      USER_LOGIN,
 
       {
         method: 'POST',
@@ -121,13 +125,24 @@ const LoginScreen = ({navigation, route}) => {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson.user_exist == true) {
-          console.log(responseJson.user_exist);
+         
+
+          SharedPreferences.setItem("id", responseJson.data['id'] );
+          SharedPreferences.setItem("name", responseJson.data['name'] );
+          SharedPreferences.setItem("username", responseJson.data['username'] );
+          SharedPreferences.setItem("password", responseJson.data['password'] );
+          SharedPreferences.setItem("email", responseJson.data['email'] );
+          SharedPreferences.setItem("a_number", responseJson.data['a_number'] );
+
+          // navigation.navigate('Root', {screen: 'Home'});
+          history.push('/main');
           notifyMessage('Login Successful');
-          // navigation.navigate('MainNavigation');
-          navigation.navigate('Root', {screen: 'Home'});
+
+          
         } else {
           notifyMessage('Please provide correct data');
           console.log(responseJson.user_exist);
+         
         }
       })
       .catch(error => {
@@ -148,13 +163,108 @@ const LoginScreen = ({navigation, route}) => {
     }
   };
 
+  const enableLocation = () =>{
+    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+      interval: 10000,
+      fastInterval: 5000,
+    })
+      .then((data) => {
+      //  console.log('----------------------'+data);
+      setTurnOnLocation(true);
+
+      })
+      .catch((err) => {
+      //  console.log('===================================================='+ err);
+      setTurnOnLocation(false);
+      });
+  }
+  const geoLocationPick =(boolState) =>{
+    console.log('currentLatitude-------'+ currentLatitude);
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const currentLongitude =  JSON.stringify(position.coords.longitude);
+        const currentLatitude =   JSON.stringify(position.coords.latitude);
+
+        setCurrentLatitude(currentLatitude) ;
+        setCurrentLongitude(currentLongitude) ;
+        SharedPreferences.setItem("lat", currentLatitude );
+        SharedPreferences.setItem("long", currentLongitude );
+
+        console.log('currentLatitude-------'+ currentLatitude);
+
+       }, (error) => {
+
+        if(!boolState){
+          enableLocation() ;
+        }
+
+       }, {
+         enableHighAccuracy: true, timeout: 20000, maximumAge: 1000
+       }
+    );
+  }
+  const subscribeLocationLocation = () => {
+    console.log('currentLatitude-------'+ currentLatitude);
+    watchID =  Geolocation.watchPosition(
+      (position) => {
+
+        const currentLongitude =
+          JSON.stringify(position.coords.longitude);
+        const currentLatitude =
+          JSON.stringify(position.coords.latitude);
+
+        setCurrentLongitude(currentLongitude);
+        setCurrentLatitude(currentLatitude);
+
+        SharedPreferences.setItem("lat", currentLatitude );
+        SharedPreferences.setItem("long", currentLongitude );
+      },
+      (error) => {
+
+      },
+      {
+        enableHighAccuracy: false,
+        maximumAge: 1000
+      },
+    );
+  };
+
+  const requestLocationPermission = async () => {
+    Geolocation.clearWatch(watchID);
+
+    console.log('Platform.OS   '+ Platform.OS);
+    if (Platform.OS === 'ios') {
+      geoLocationPick() ;
+      subscribeLocationLocation();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('permission granted android');
+
+          geoLocationPick() ;
+          subscribeLocationLocation();
+        } else {
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+  // requestLocationPermission();
+  // return () => {
+  //   Geolocation.clearWatch(watchID);
+  // };
+
 
 
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <CurrentLatLong
-
         setCurrentLatitude={setCurrentLatitude}
         setCurrentLongitude={setCurrentLongitude}
       />
@@ -175,13 +285,13 @@ const LoginScreen = ({navigation, route}) => {
           <TextInput
             style={styles.input}
             onChangeText={setUserName}
-            placeholder="Username"
+            placeholder="Enter your Username"
           />
 
           <TextInput
             style={styles.input}
             onChangeText={setPassword}
-            placeholder="Password"
+            placeholder="Enter your Password"
           />
         </View>
         <View style={styles.view2}>

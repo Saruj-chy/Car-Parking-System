@@ -1,36 +1,20 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable prettier/prettier */
-//  import 'react-native-gesture-handler';
+import 'react-native-gesture-handler';
 
-import React, {useState} from 'react';
-import EntranceScreen from './Components/EntranceScreen/EntranceScreen';
-import GoogleMapScreen from './Components/GoogleMapScreen/GoogleMapScreen';
-import HomeScreen from './Components/HomeScreen/HomeScreen';
+import React from 'react';
 import MainNavigationScreen from './Components/MainNavigationScreen/MainNavigationScreen';
-import MainRouteNavigate from './Components/MainRouteNavigate/MainRouteNavigate';
-import PracticeLogScreen from './Components/PracticeLogScreen/PracticeLogScreen';
-import PracticeMapview from './Components/PracticeMapView/PracticeMapview';
+import {NativeRouter, Route} from 'react-router-native';
+import LoginScreen from './Components/LoginScreen/LoginScreen';
 import RegistrationScreen from './Components/RegistrationScreen/RegistrationScreen';
-import SignOutScreen from './Components/SignOutScreen/SignOutScreen';
-
 
 function App() {
   return (
-    <MainNavigationScreen />
+    <NativeRouter>
+      <Route exact path="/" component={LoginScreen} />
+      <Route exact path="/registration" component={RegistrationScreen} />
+      <Route exact path="/main" component={MainNavigationScreen} />
 
-
-
-    // <RegistrationScreen />
-    // <MainRouteNavigate />
-
-    // <HomeScreen />
-
-    // <EntranceScreen />
-    // <PracticeLogScreen />
-
-
-
-    );
+    </NativeRouter>
+  );
 }
 
 export default App;

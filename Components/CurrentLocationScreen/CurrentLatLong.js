@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 // import { View } from 'react-native';
@@ -15,6 +16,8 @@ import {
     ActivityIndicator
   } from 'react-native';
 
+  import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+
   //import all the components we are going to use.
   import Geolocation from '@react-native-community/geolocation';
   var SharedPreferences = require('react-native-shared-preferences');
@@ -27,14 +30,12 @@ const CurrentLatLong = ({setCurrentLatitude, setCurrentLongitude}) => {
       const [ loading, setLoading ] = useState(true);
 
       useEffect(() => {
-        console.log("object");
         const requestLocationPermission = async () => {
           console.log('Platform.OS   '+ Platform.OS);
           if (Platform.OS === 'ios') {
             getOneTimeLocation();
             subscribeLocationLocation();
           } else {
-            console.log('permission granted');
             try {
               const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -46,7 +47,6 @@ const CurrentLatLong = ({setCurrentLatitude, setCurrentLongitude}) => {
                 getOneTimeLocation();
                 subscribeLocationLocation();
               } else {
-                setLocationStatus('Permission Denied');
               }
             } catch (err) {
               console.warn(err);
@@ -89,12 +89,9 @@ const CurrentLatLong = ({setCurrentLatitude, setCurrentLongitude}) => {
       const getOneTimeLocation = () => {
         console.log('Getting Location ...');
 
-        setLocationStatus('Getting Location ...');
         Geolocation.getCurrentPosition(
           //Will give you the current location
           (position) => {
-            setLocationStatus('Refresh your location');
-            setLoading(false) ;
 
             //getting the Longitude from the location json
             const currentLongitude =
@@ -113,8 +110,7 @@ const CurrentLatLong = ({setCurrentLatitude, setCurrentLongitude}) => {
             SharedPreferences.setItem("long", currentLongitude );
           },
           (error) => {
-            setLocationStatus(error.message+" Please Turn on your location");
-            setLoading(false) ;
+
           },
           {
             enableHighAccuracy: false,
@@ -151,8 +147,7 @@ const CurrentLatLong = ({setCurrentLatitude, setCurrentLongitude}) => {
             SharedPreferences.setItem("long", currentLongitude );
           },
           (error) => {
-            setLocationStatus(error.message+" Please Turn on your location");
-            setLoading(false) ;
+            enableLocation() ;
           },
           {
             enableHighAccuracy: false,
@@ -162,7 +157,18 @@ const CurrentLatLong = ({setCurrentLatitude, setCurrentLongitude}) => {
       };
 
 
-
+      const enableLocation = () =>{
+        RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+          interval: 10000,
+          fastInterval: 5000,
+        })
+          .then((data) => {
+          //  console.log('----------------------'+data);
+          })
+          .catch((err) => {
+          //  console.log('===================================================='+ err);
+          });
+      }
 
 
      const abc = () => {

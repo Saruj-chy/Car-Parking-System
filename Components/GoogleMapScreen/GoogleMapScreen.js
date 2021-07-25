@@ -1,14 +1,14 @@
-
-import React, { useEffect, useState } from 'react';
+/* eslint-disable prettier/prettier */
+/* eslint-disable quotes */
+import React, {useEffect, useState} from 'react';
 // AIzaSyAbCCIit-DfRCpTXRaCzfHi1AQUsqRjVK4
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
-import MapView, { Marker, LocalTile } from 'react-native-maps';
+import MapView, {Marker, LocalTile} from 'react-native-maps';
 var SharedPreferences = require('react-native-shared-preferences');
 
 
-const GoogleMapScreen = ({ navigation, route }) => {
-
+const GoogleMapScreen = ({navigation, route}) => {
   let count = 0;
   const [latlong, setLatLong] = useState([]);
 
@@ -28,7 +28,7 @@ const GoogleMapScreen = ({ navigation, route }) => {
       // 22.351446, 91.838292 //guljar begum
 
       //=================================================================================================================================
-      console.log('------------==================-----------------' + route.params);
+      // console.log('------------==================-----------------' + route.params);
       if (route.params) {
         var dataToSend = { latitude: values[0], longitude: values[1] };
         var formBody = [];
@@ -139,12 +139,19 @@ const GoogleMapScreen = ({ navigation, route }) => {
           currentLatitude != 0 &&
           <MapView
             style={styles.mapStyle}
-            initialRegion={{
+            // initialRegion={{
+            //   latitude: lat,
+            //   longitude: long,
+            //   latitudeDelta: 0.0922,
+            //   longitudeDelta: 0.0421,
+            // }}
+            region={{
               latitude: lat,
               longitude: long,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
+
 
 
 

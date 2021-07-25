@@ -13,10 +13,14 @@ import {
   ToastAndroid,
   AlertIOS,
 } from 'react-native';
+import { USER_REGISTER } from '../Constants/Constants';
 import CurrentLatLong from '../CurrentLocationScreen/CurrentLatLong';
 import car_img from '../ImageFolder/smart_car_park.jpg';
+var SharedPreferences = require('react-native-shared-preferences');
 
-const RegistrationScreen = ({navigation}) => {
+
+
+const RegistrationScreen = ({navigation, history}) => {
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -54,7 +58,7 @@ const RegistrationScreen = ({navigation}) => {
 
     fetch(
       // 'http://192.168.1.8/android/Bulbul_Sir_PHP/user_register.php',
-      'https://snakes123.000webhostapp.com/bulbul_sir/user_register_bulbulsir.php',
+      USER_REGISTER,
 
       {
         method: 'POST',
@@ -68,7 +72,14 @@ const RegistrationScreen = ({navigation}) => {
       .then(responseJson => {
         if (responseJson.state === 'Success') {
           console.log(responseJson.state);
-          navigation.navigate('Root', {screen: 'Home'});
+          SharedPreferences.setItem("id", responseJson.data['id'] );
+          SharedPreferences.setItem("name", responseJson.data['name'] );
+          SharedPreferences.setItem("username", responseJson.data['username'] );
+          SharedPreferences.setItem("password", responseJson.data['password'] );
+          SharedPreferences.setItem("email", responseJson.data['email'] );
+          SharedPreferences.setItem("a_number", responseJson.data['a_number'] );
+          // navigation.navigate('Root', {screen: 'Home'});
+          history.push('/main');
           notifyMessage('Registration Successful');
         } else {
           notifyMessage('Registration  Unsuccessful');
@@ -80,7 +91,8 @@ const RegistrationScreen = ({navigation}) => {
   };
 
   const onLoginFunc = () => {
-    navigation.navigate('Root', {screen: 'Login'});
+    // navigation.navigate('Root', {screen: 'Login'});
+    history.push('/');
   };
 
   const notifyMessage = msg => {
@@ -103,6 +115,7 @@ const RegistrationScreen = ({navigation}) => {
       />
       <ImageBackground source={car_img} style={styles.image}>
         <View
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -118,30 +131,32 @@ const RegistrationScreen = ({navigation}) => {
           <TextInput
             style={styles.input}
             onChangeText={setName}
-            placeholder="Your Name"
+            placeholder="Your First & Last Name"
           />
           <TextInput
             style={styles.input}
             onChangeText={setUserName}
-            placeholder="Username"
+            placeholder="Enter your Username"
           />
 
           <TextInput
             style={styles.input}
             onChangeText={setPassword}
-            placeholder="Password"
+            placeholder="Enter your Password"
           />
 
           <TextInput
             style={styles.input}
             onChangeText={setEmail}
-            placeholder="Email"
+            keyboardType="email-address"
+            placeholder="Enter your Email"
           />
 
           <TextInput
             style={styles.input}
             onChangeText={setNumber}
-            placeholder="A Number"
+            keyboardType="phone-pad"
+            placeholder="Enter your phone Number"
           />
         </View>
         <View style={styles.view2}>

@@ -1,3 +1,6 @@
+/* eslint-disable radix */
+/* eslint-disable quotes */
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-trailing-spaces */
 // https://fontawesome.com/v4.7.0/icons/
 
@@ -5,13 +8,17 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   Image,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  ToastAndroid,
   TouchableHighlight,
   TouchableOpacity,
   View,
+  AlertIOS,
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
@@ -37,6 +44,8 @@ import Dialog, {
 } from 'react-native-popup-dialog';
 
 import { BackHandler } from 'react-native';
+import SelectCarDialog from '../DialogAllView/SelectCarDialog';
+import TestingDialog from '../DialogAllView/TestingDialog';
 
 
 const arrowLeftIcon = parseIconFromClassName('fa fa-arrow-left');
@@ -45,17 +54,19 @@ const sendIcon = parseIconFromClassName('fa fa-paper-plane');
 const EntranceScreen = ({ navigation, route }) => {
   const [locationDetails, setLocationDetails] = useState({});
   const [totalParking, setTotalParking] = useState([]);
+  const [bookedParkingList, setBookedParkingList] = useState([]);
   const [arrayFirst, setArrayFirst] = useState([]);
   const [arraySecond, setArraySecond] = useState([]);
   const [arrayThird, setArrayThird] = useState([]);
   const [arrayFourth, setArrayFourth] = useState([]);
+  const [totalSlot, setTotalSlot] = useState(0);
+  const [slotNumber, setSlotNumber] = useState(0);
 
 
   useEffect(() => {
     if (route.params) {
-      console.log(' route id: ' + route.params.id);
+      // console.log(' route id: ' + route.params.id);
       var dataToSend = { location_id: route.params.id };
-      console.log(dataToSend);
       var formBody = [];
       for (var key in dataToSend) {
         var encodedKey = encodeURIComponent(key);
@@ -63,40 +74,40 @@ const EntranceScreen = ({ navigation, route }) => {
         formBody.push(encodedKey + '=' + encodedValue);
       }
       formBody = formBody.join('&');
-      fetch(
-        'https://snakes123.000webhostapp.com/bulbul_sir/checkpoint_details_bulbulsir.php',
-        {
-          method: 'POST',
-          body: formBody,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-          },
-        },
-      )
-        .then(response => response.json())
-        .then(responseJson => {
-          if (responseJson.error == false) {
-            const checkPointDetails = {
-              error: responseJson.error,
-              total: responseJson.total,
-              free: responseJson.free,
-              booked: responseJson.booked,
-            };
-            // console.log(responseJson.total);
-            // console.log(responseJson.free);
-            // console.log(responseJson.booked);
-            // console.log(responseJson.error);
-            // setLatLong(responseJson.data) ;
-            setLocationDetails(checkPointDetails);
-            console.log(locationDetails.error);
-          } else {
-            console.log(responseJson.error);
-          }
-        })
-        .catch(error => {
-          // alert(JSON.stringify(error));
-          console.error(error);
-        });
+      // fetch(
+      //   'https://snakes123.000webhostapp.com/bulbul_sir/checkpoint_details_bulbulsir.php',
+      //   {
+      //     method: 'POST',
+      //     body: formBody,
+      //     headers: {
+      //       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      //     },
+      //   },
+      // )
+      //   .then(response => response.json())
+      //   .then(responseJson => {
+      //     if (responseJson.error == false) {
+      //       const checkPointDetails = {
+      //         error: responseJson.error,
+      //         total: responseJson.total,
+      //         free: responseJson.free,
+      //         booked: responseJson.booked,
+      //       };
+      //       // console.log(responseJson.total);
+      //       // console.log(responseJson.free);
+      //       // console.log(responseJson.booked);
+      //       // console.log(responseJson.error);
+      //       // setLatLong(responseJson.data) ;
+      //       setLocationDetails(checkPointDetails);
+      //       console.log(locationDetails.error);
+      //     } else {
+      //       console.log(responseJson.error);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     // alert(JSON.stringify(error));
+      //     console.error(error);
+      //   });
 
       //==============================     parking total slot
       getTotalParkingSlot(formBody);
@@ -127,17 +138,19 @@ const EntranceScreen = ({ navigation, route }) => {
           //   data: responseJson.data,
 
           // };
-          console.log(responseJson.error);
-          console.log(responseJson.data);
+          // console.log(responseJson.error);
+          // console.log(responseJson.data);
           setTotalParking(responseJson.data);
 
           getBookingParkingSlot(formBody, responseJson.data);
+
+          // console.log('-------------------------length' + totalParking.length);
 
 
 
 
         } else {
-          console.log(responseJson.error);
+          // console.log(responseJson.error);
         }
       })
       .catch(error => {
@@ -161,19 +174,20 @@ const EntranceScreen = ({ navigation, route }) => {
       .then(responseJson => {
         if (responseJson.error == false) {
 
-          console.log(responseJson.data);
-          // setTotalParking(responseJson.data);
+          // console.log(responseJson.data);
+          setBookedParkingList(responseJson.data);
 
           distributeData(totalParkingJson, responseJson.data);
 
 
         } else {
-          console.log(responseJson.error);
+          distributeData(totalParkingJson, []);
+          // console.log(responseJson.error);
         }
       })
       .catch(error => {
         // alert(JSON.stringify(error));
-        console.error(error);
+        // console.error(error);
       });
 
   };
@@ -188,6 +202,8 @@ const EntranceScreen = ({ navigation, route }) => {
       var list2 = [];
       var list3 = [];
       var list4 = [];
+
+      setTotalSlot(parseInt(item.total_slot));
 
 
       for (var i = 1; i <= parseInt(item.total_slot); i++) {
@@ -225,7 +241,13 @@ const EntranceScreen = ({ navigation, route }) => {
 
 
 
-
+  const notifyMessage = msg => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(msg, ToastAndroid.SHORT);
+    } else {
+      AlertIOS.alert(msg);
+    }
+  };
 
   const onParkMyCarClick = () => {
     console.log('park my car click');
@@ -237,7 +259,7 @@ const EntranceScreen = ({ navigation, route }) => {
   };
 
   const onClick = () => {
-    // navigation.goBack();
+    navigation.goBack();
     console.log('navigate back pressed');
   };
 
@@ -249,6 +271,8 @@ const EntranceScreen = ({ navigation, route }) => {
   const [reportDialog, setReportDialog] = useState(false);
   const [report, setReport] = React.useState('first');
   const [cancelBooking, setCancelbooking] = useState(false);
+  const [carSelect, setCarSelect] = useState(false);
+  const [carStatus, setCarStatus] = useState('');
 
   const checkboxes = [
     { id: 1, checked: false, title: 'checked 1' },
@@ -263,6 +287,64 @@ const EntranceScreen = ({ navigation, route }) => {
     );
   });
 
+
+  const slotBookedUnbooked = (slotNumber, textValue ) =>{
+    if (route.params) {
+
+      var dataToSend = {
+        location_id: route.params.id,
+        slot_number: slotNumber,
+        status: textValue
+
+      };
+      console.log(dataToSend);
+        var formBody = [];
+        for (var key in dataToSend) {
+          var encodedKey = encodeURIComponent(key);
+          var encodedValue = encodeURIComponent(dataToSend[key]);
+          formBody.push(encodedKey + '=' + encodedValue);
+        }
+        formBody = formBody.join('&');
+        fetch(
+          'https://snakes123.000webhostapp.com/bulbul_sir/booked_parking_slot.php',
+          {
+            method: 'POST',
+            body: formBody,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+          },
+        )
+          .then(response => response.json())
+          .then(responseJson => {
+            if (responseJson.error == false) {
+              // console.log(responseJson.data);
+              setBookedParkingList(responseJson.data);
+              setCarSelect(false);
+              notifyMessage(textValue +" successfully");
+              distributeData(totalParking, responseJson.data) ;
+
+
+            } else {
+              distributeData(totalParking, []) ;
+              setCarSelect(false);
+              notifyMessage(textValue +" successfully");
+              // console.log(responseJson.error);
+            }
+          })
+          .catch(error => {
+            // alert(JSON.stringify(error));
+            // console.error(error);
+          });
+
+
+    }
+
+
+
+
+
+  };
 
 
   function handleBackButtonClick() {
@@ -285,7 +367,7 @@ const EntranceScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.view_top}>
         <FontAwesome
-          style={{ fontSize: 32, color: 'white' }}
+          style={{ fontSize: 25, color: 'white' }}
           icon={arrowLeftIcon}
           onPress={onClick}
         />
@@ -305,7 +387,15 @@ const EntranceScreen = ({ navigation, route }) => {
             <View style={[styles.body_left_item]}>
               {arrayFirst.map(item => (
                 <Pressable
-                  onPress={() => console.log('press id:' + item)}
+                  onPress={() => {
+                    console.log('====================== ' +parseInt(item.slot_numb) );
+
+                    setCarStatus(item.status);
+                    setSlotNumber(parseInt(item.slot_numb));
+                    setCarSelect(true);
+
+
+                  }}
                   style={styles.item_fixed_border}>
                   {
                     item.status === "unbooked" ? <Image source={blue_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
@@ -323,7 +413,13 @@ const EntranceScreen = ({ navigation, route }) => {
 
                 {arraySecond.map(item => (
                   <Pressable
-                    onPress={() => console.log('press id:' + item)}
+                    onPress={() => {
+                      console.log('====================== ' +parseInt(item.slot_numb) );
+
+                      setCarStatus(item.status);
+                      setSlotNumber(parseInt(item.slot_numb));
+                      setCarSelect(true);
+                    }}
                     style={styles.item_fixed_border}>
                     {
                       item.status === "unbooked" ? <Image source={white_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
@@ -339,7 +435,13 @@ const EntranceScreen = ({ navigation, route }) => {
 
                 {arrayThird.map(item => (
                   <Pressable
-                    onPress={() => console.log('press id:' + item)}
+                    onPress={() => {
+                      console.log('====================== ' +parseInt(item.slot_numb) );
+
+                    setCarStatus(item.status);
+                    setSlotNumber(parseInt(item.slot_numb));
+                    setCarSelect(true);
+                    }}
                     style={styles.item_fixed_border}>
                     {
                       item.status === "unbooked" ? <Image source={white_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
@@ -354,7 +456,13 @@ const EntranceScreen = ({ navigation, route }) => {
 
               {arrayFourth.map(item => (
                 <Pressable
-                  onPress={() => console.log('press id:' + item)}
+                  onPress={() => {
+                    console.log('====================== ' +parseInt(item.slot_numb) );
+
+                    setCarStatus(item.status);
+                    setSlotNumber(parseInt(item.slot_numb));
+                    setCarSelect(true);
+                  }}
                   style={styles.item_fixed_border}>
                   {
                     item.status === "unbooked" ? <Image source={white_car} style={styles.tinyLogo} /> : <Image source={red_car} style={styles.tinyLogo} />
@@ -367,11 +475,12 @@ const EntranceScreen = ({ navigation, route }) => {
         </ScrollView>
       </View>
 
+
       <View style={styles.view_below}>
-        <Text style={{ color: 'white' }}>Total: {locationDetails.total} </Text>
-        <Text style={{ color: 'white' }}>Empty: {locationDetails.free} </Text>
+        <Text style={{ color: 'white' }}>Total: {totalSlot} </Text>
+        <Text style={{ color: 'white' }}>Empty: {parseInt(totalSlot) - parseInt(bookedParkingList.length)} </Text>
         <Text style={{ color: 'white' }}>
-          Reserved: {locationDetails.booked}{' '}
+          Reserved: {bookedParkingList.length}
         </Text>
       </View>
 
@@ -510,6 +619,109 @@ const EntranceScreen = ({ navigation, route }) => {
 
 
 
+      {/*=================================         for dialog view, it's show, when user pick any car               =========================== */}
+      {/*  ===========================                           Select a Car slot                    ===============================      */}
+
+      <Dialog
+        onDismiss={() => {
+          setCarSelect(false);
+        }}
+        width={0.9}
+        visible={carSelect}
+        rounded
+        actionsBordered
+
+
+        >
+        <DialogContent
+          style={{
+            backgroundColor: 'green',
+          }}
+          >
+          <View >
+            <Text
+            style={{ fontSize:20, color:'white', marginTop:10}}
+            >Select your car slot:</Text>
+            <TextInput
+            value={slotNumber}
+              style={styles.input}
+              onChangeText={(text) => {
+                // console.log(text);
+                // if (parseInt(text) >= totalSlot) {
+                //   console.log('incorrect number');
+                //   notifyMessage("Your number is upper than " + totalSlot);
+                //   setSlotNumber(0);
+                // } else if (parseInt(text) <= 0) {
+                //   notifyMessage("Your number is lower than 0");
+                //   setSlotNumber(0);
+                // } else {
+                //   setSlotNumber(parseInt(text));
+                // }
+              }}
+              editable={false}
+              placeholder={""+slotNumber}
+              placeholderTextColor="green"
+              keyboardType="number-pad"
+            />
+
+            <View style={styles.view2}>
+              <Text
+                style={{ backgroundColor: '#ffccff', color: 'green', padding: 10 }}
+                onPress={
+                  (event) => {
+
+                    var textValue = event._dispatchInstances.memoizedProps.children ;
+                    console.log(slotNumber);
+                    console.log(textValue);
+                    if( textValue ==="Cancel"){
+                      setCarSelect(false);
+                    }else{
+                      slotBookedUnbooked(slotNumber, textValue ) ;
+                    }
+                    //slotnumber, status, carStatus
+                  }
+                }
+                >
+                {
+                  carStatus==="booked"? "Unbooked" : "Cancel"
+                }
+              </Text>
+
+              <Text
+                style={{ backgroundColor: '#ffccff', color: 'green', padding: 10 }}
+                onPress={
+                  (event) => {
+                    var textValue = event._dispatchInstances.memoizedProps.children ;
+                    console.log(slotNumber);
+                    console.log(textValue);
+                    if( textValue ==="Cancel"){
+                      setCarSelect(false);
+                    }else{
+                      slotBookedUnbooked(slotNumber, textValue ) ;
+                    }
+                    //slotnumber, status, carStatus
+                  }
+                }
+                >
+                 {
+                  carStatus==="booked"? "Cancel" : "Booked"
+                }
+              </Text>
+            </View>
+
+          </View>
+
+        </DialogContent>
+      </Dialog>
+
+      {/* //saruj */}
+
+      {/*=================================         for dialog view, it active when send btn click                =========================== */}
+      {/*  ===========================                            Report a Problem                      ===============================      */}
+
+
+
+
 
 
       {/*-------------------                       Cancel booking dialog view            ---------------------------*/}
@@ -577,7 +789,7 @@ const styles = StyleSheet.create({
     // display:'flex',
     flex: 0.05,
     flexDirection: 'row',
-    padding: 10,
+    paddingVertical: 10,
     justifyContent: 'space-around',
     backgroundColor: 'red',
     alignItems: 'center',
@@ -639,6 +851,25 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  input: {
+    height: 40,
+    marginVertical:10,
+    paddingLeft: 15,
+
+    borderWidth: 1,
+    backgroundColor: 'white',
+    color: 'green',
+  },
+  view2: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // borderWidth: 1,
+    justifyContent: 'space-between',
+    // margin: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginTop:10
   },
 });
 

@@ -22,9 +22,7 @@ import ParkMyCarScreen from '../ParkMyCarScreen/ParkMyCarScreen';
 import ReportScreen from '../ReportScreen/ReportScreen';
 import EntranceScreen from '../EntranceScreen/EntranceScreen';
 import ExitScreen from '../ExitScreen/ExitScreen';
-import LoginScreen from '../LoginScreen/LoginScreen';
 import MainRouteNavigate from '../MainRouteNavigate/MainRouteNavigate';
-import RegistrationScreen from '../RegistrationScreen/RegistrationScreen';
 import HomeScreen from '../HomeScreen/HomeScreen';
 import GoogleMapScreen from '../GoogleMapScreen/GoogleMapScreen';
 import PracticeLogScreen from '../PracticeLogScreen/PracticeLogScreen';
@@ -39,12 +37,13 @@ var SharedPreferences = require('react-native-shared-preferences');
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+
 const NavigationDrawerStructure = props => {
-  //Structure for the navigatin Drawer
   const toggleDrawer = () => {
-    //Props to open/close the drawer
+    console.log('--------------------------------------');
     props.navigationProps.toggleDrawer();
   };
+  
 
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -80,7 +79,7 @@ function HomeScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -104,7 +103,7 @@ function HistoryScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -127,7 +126,7 @@ function ProfileScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -151,7 +150,7 @@ function MySpotsScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -175,7 +174,7 @@ function SignOutScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -198,7 +197,7 @@ function ParkMyCarScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -222,7 +221,7 @@ function ReportScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -246,7 +245,7 @@ function EntranceScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -270,7 +269,7 @@ function GoogleMapScreenStack({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -283,19 +282,6 @@ function GoogleMapScreenStack({ navigation }) {
 function Root({ navigation }) {
   return (
     <Stack.Navigator>
-      {/* //saruj change apply */}
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
-
-      {/* <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreenStack}
-        options={{headerShown: false}}
-      /> */}
-
       <Stack.Screen
         name="Home"
         component={HomeScreenStack}
@@ -320,12 +306,6 @@ function Root({ navigation }) {
         }}
         component={EntranceScreen}
       />
-
-      <Stack.Screen
-        name="Registration"
-        component={RegistrationScreen}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen
         name="LogScreen"
         component={PracticeLogScreen}
@@ -343,7 +323,7 @@ function Root({ navigation }) {
           headerStyle: {
             backgroundColor: '#f4511e', //Set Header color
           },
-          headerTintColor: '#0000FF', //Set Header text color //
+          headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
             fontWeight: 'bold', //Set Header text style
           },
@@ -351,7 +331,6 @@ function Root({ navigation }) {
       // options={{headerShown: false}}
       />
 
-      {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
     </Stack.Navigator>
   );
 }
@@ -360,9 +339,23 @@ const MainNavigationScreen = ({ navigation }) => {
 
   const [currentLongitude, setCurrentLongitude] = useState('');
   const [currentLatitude, setCurrentLatitude] = useState('');
+  const [name, setName] = useState('');
+  const [username, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [a_number, setNumber] = useState('');
+
 
   useEffect(() => {
 
+
+    console.log('==========================================================================================');
+    SharedPreferences.getItems(['id',"name", "username", 'password', 'email','a_number'], function (values) {
+      console.log(values[0] + "    " + values[1]+'      '+ values[2] + "    " + values[3]);
+      setName(values[1]) ;
+      setUserName(values[2]) ;
+      setEmail(values[4]) ;
+      setNumber(values[5]) ;
+    });
 
     Geolocation.getCurrentPosition(
       //Will give you the current location
@@ -375,7 +368,9 @@ const MainNavigationScreen = ({ navigation }) => {
         SharedPreferences.setItem("lat", currentLatitude);
         SharedPreferences.setItem("long", currentLongitude);
 
-      }, (error) => alert("Please turn on your location"), {
+      }, (error) => {
+        // alert("Please turn on your location") ;
+      }, {
       enableHighAccuracy: true, timeout: 20000, maximumAge: 1000
     }
     );
@@ -429,11 +424,11 @@ const MainNavigationScreen = ({ navigation }) => {
                     }}>
                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', }}>
                       <Image source={profile} style={{ width: 100, height: 100, }} />
-                      <Text style={{ fontSize: 20, paddingLeft: 10, fontWeight: 'bold', color: 'white' }}>Sarose Datta</Text>
+                      <Text style={{ fontSize: 20, paddingLeft: 10, fontWeight: 'bold', color: 'white' }}>{name}</Text>
                     </View>
                     <View >
-                      <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>+8801516174937</Text>
-                      <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>sarose.datta.cu@gmail.com</Text>
+                      <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>+880{a_number}</Text>
+                      <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>{email}</Text>
 
                     </View>
                   </View>
@@ -477,11 +472,7 @@ const MainNavigationScreen = ({ navigation }) => {
           options={{drawerLabel: 'Entrance Screen'}}
           component={EntranceScreenStack}
         /> */}
-          <Drawer.Screen
-            name="Exit Screen"
-            options={{ drawerLabel: 'Exit Screen', headerShown: false }}
-            component={LoginScreen}
-          />
+        
           <Drawer.Screen
             name="GoogleMaps"
             // options={{drawerLabel: 'History'}}
