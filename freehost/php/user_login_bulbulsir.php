@@ -1,8 +1,13 @@
 <?php
+
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
-	isset($_POST['username']) ? $username = $_POST['username'] : $username = '' ;
-	isset($_POST['password']) ? $password = $_POST['password'] : $password = '' ;
+	if( isset($_POST['username']) && isset($_POST['password']) ){
+	    isset($_POST['username']) ? $username = $_POST['username'] : $username = '' ;
+	    isset($_POST['password']) ? $password = $_POST['password'] : $password = '' ;
+	}else{
+	    exit() ;
+	}
 
 // $username = $_POST['username'] ;
 // $password= $_POST['password'] ;
@@ -15,19 +20,17 @@ mysqli_query($conn,'SET CHARACTER SET utf8');
 mysqli_query($conn,"SET SESSION collation_connection ='utf8_general_ci'");
 
 
-
-
 $r = getAllUser($conn,  $username, $password);
 
 
-  $specificUser = array();
   while($row=$r->fetch_array(MYSQLI_ASSOC)){
-   $specificUser[] = $row ;
+   $specificUser = $row ;
  }
 
 
  $response = array();
  $response['user_exist'] = (count($specificUser)>0);
+ $response['data'] = $specificUser ;
 
  echo json_encode($response) ;
 

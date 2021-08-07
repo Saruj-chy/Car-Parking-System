@@ -2,6 +2,7 @@
 if($_SERVER['REQUEST_METHOD']=='POST'){
 
   $location_id = $_POST['location_id'];
+  $id = $_POST['id'];
 
 
 
@@ -12,7 +13,7 @@ mysqli_query($conn,"SET SESSION collation_connection ='utf8_general_ci'");
 
 
 
-$r = getAllBookedDetails($conn,  $location_id);
+$r = getAllBookedDetails($conn,  $location_id, $id);
 
 
   $bookedDetails = array();
@@ -31,8 +32,8 @@ $r = getAllBookedDetails($conn,  $location_id);
 }
 
 
- function getAllBookedDetails($conn, $location_id){
-  $sql = "SELECT * FROM `parking_slot_status` WHERE `location_id`= '$location_id' " ;
+ function getAllBookedDetails($conn, $location_id, $id){
+  $sql = "SELECT * FROM `parking_slot_status` WHERE `location_id`= '$location_id' AND `id`= '$id' " ;
   $r = mysqli_query($conn,$sql) ;
   return $r ;
  }

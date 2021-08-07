@@ -19,9 +19,15 @@ $r = insertNewSnakeEntry($conn, $name, $username, $password, $email, $a_number )
 
 $snake_id = $conn-> insert_id ;
 
+$r1 = getAllUser($conn,  $username, $password);
+while($row=$r1->fetch_array(MYSQLI_ASSOC)){
+   $specificUser = $row ;
+ }
+
 $response = array();
  if($snake_id != 0){
    $response['state'] = "Success";
+   $response['data'] = $specificUser;
  }else{
    http_response_code(401);
    $response['state'] = "Failed";
@@ -39,6 +45,12 @@ function insertNewSnakeEntry($conn, $name, $username, $password, $email, $a_numb
  $stmt->close() ;
  return $stmt ;
 }
+
+ function getAllUser($conn, $username, $password){
+  $sql = "SELECT * FROM `user_check` WHERE `username`= '$username' AND `password`= '$password' " ;
+  $r = mysqli_query($conn,$sql) ;
+  return $r ;
+ }
 
 mysqli_close($conn) ;
 

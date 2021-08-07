@@ -4,6 +4,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
   $location_id = $_POST['location_id'];
   $slot_number = $_POST['slot_number'];
   $status = $_POST['status'];
+  $id = $_POST['id'];
 
 
 
@@ -14,15 +15,15 @@ mysqli_query($conn,"SET SESSION collation_connection ='utf8_general_ci'");
 
 
 if($status == "Booked"){
-  $r1 = insertData($conn,  $location_id, $slot_number, "booked");
+  $r1 = insertData($conn,  $location_id, $slot_number, "booked", $id);
 
 }else if($status == "Unbooked"){
-  $r1 = deleteData($conn,   $location_id, $slot_number);
+  $r1 = deleteData($conn,   $location_id, $slot_number, $id);
   
 }
 
 
-  $r = getAllData($conn, $location_id) ;
+  $r = getAllData($conn, $location_id, $id) ;
 
 
   $specificUser = array();
@@ -41,24 +42,24 @@ if($status == "Booked"){
 }
 
 
- function deleteData( $conn,  $location_id, $slot_number ){
-  $sql = "DELETE FROM `parking_slot_status` WHERE `location_id`= '$location_id' AND `slot_numb` = '$slot_number' " ;
+ function deleteData( $conn,  $location_id, $slot_number, $id ){
+  $sql = "DELETE FROM `parking_slot_status` WHERE `location_id`= '$location_id' AND `slot_numb` = '$slot_number' AND `id` = '$id' " ;
   $r = mysqli_query($conn,$sql) ;
   return $r ;
  }
 
- function insertData( $conn,  $location_id, $slot_number, $status ){
-  $sql = "INSERT INTO `parking_slot_status`(`location_id`,`slot_numb`,`status`) VALUES (?,?,?)";
+ function insertData( $conn,  $location_id, $slot_number, $status, $id ){
+  $sql = "INSERT INTO `parking_slot_status`(`location_id`,`slot_numb`,`status`, `id`) VALUES (?,?,?,?)";
   $stmt = $conn->prepare($sql) ;
-  $stmt -> bind_param('iis',$location_id, $slot_number, $status ) ;
+  $stmt -> bind_param('iisi',$location_id, $slot_number, $status, $id ) ;
   $stmt -> execute();
   $stmt->close() ;
   return $stmt ;
  }
 
 
-  function getAllData($conn, $location_id){
-   $sql = "SELECT * FROM `parking_slot_status` WHERE `location_id`= '$location_id' " ;
+  function getAllData($conn, $location_id, $id){
+   $sql = "SELECT * FROM `parking_slot_status` WHERE `location_id`= '$location_id' AND `id` = '$id' " ;
    $r = mysqli_query($conn,$sql) ;
    return $r ;
   }
