@@ -32,6 +32,7 @@ import { black, c_white, ipark_1, login_app_name, login_short_name, login_t1, lo
 import { UserContext } from '../../App';
 var SharedPreferences = require('react-native-shared-preferences');
 
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
 
@@ -42,6 +43,7 @@ const LoginScreen = ({ history }) => {
   const [currentLatitude, setCurrentLatitude] = useState('');
   const [turnOnLocation, setTurnOnLocation] = useState(false);
   const [loggedInUserID, setLoggedInUserID] = useContext(UserContext);
+  const [hidePass, setHidePass] = useState(true);
 
 
 
@@ -198,6 +200,8 @@ const LoginScreen = ({ history }) => {
     );
   };
 
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CurrentLatLong
@@ -212,13 +216,13 @@ const LoginScreen = ({ history }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 alignContent: 'center',
-                marginTop:200
+                marginTop:150
               }}>
-              <Text style={{ fontSize: 30, color: pri_1, justifyContent: 'center', marginHorizontal: 10 }}>
+              <Text style={{ fontSize: 55, color: pri_1, justifyContent: 'center', marginHorizontal: 10, fontWeight:'bold' }}>
                 {login_short_name}
               </Text>
-              <Text style={{ fontSize: 16, color: pri_1, justifyContent: 'center', marginHorizontal: 10 }}>({login_app_name})</Text>
-              <Text style={{ fontSize: 30, color: pri_2, marginTop: 20 }}>Sign In</Text>
+              <Text style={{ fontSize: 14, color: pri_1, justifyContent: 'center', marginHorizontal: 10 }}>({login_app_name})</Text>
+              <Text style={{marginTop:50, fontSize: 30, color: pri_2, fontWeight:'bold'}}>Sign In</Text>
             </View>
             <View>
               <TextInput
@@ -230,8 +234,16 @@ const LoginScreen = ({ history }) => {
               <TextInput
                 style={styles.input}
                 onChangeText={setPassword}
+                autoCompleteType="password"
+                secureTextEntry={hidePass ? true : false}
+
+              
                 placeholder="Enter your Password"
               />
+            
+
+
+
             </View>
             <View style={styles.view2}>
               <Text

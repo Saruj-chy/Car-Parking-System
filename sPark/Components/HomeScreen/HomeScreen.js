@@ -46,52 +46,17 @@ const HomeScreen = ({ navigation }) => {
 
   const getSharedData = () =>{
     SharedPreferences.getItems(["lat", "long"], function (values) {
-
-
-      console.log(values[0] + "    " + values[1]);
       setCurrentLatitude(values[0]);
       setCurrentLongitude(values[1]);
-
+      
+      console.log(values[0]+"   "+ values[1]) ;
 
     });
   }
 
-  const sendRequest = useCallback(async () => {
-    await getSharedData() ;
-  }, [])
+  
 
-  const loadTouch = () => {
-    console.log('load touch touch');
-    // Geolocation.clearWatch(watchID);
-    // location();
-    // getSharedData() ;
-    // sendRequest() ;
-
-
-    onRefresh() ;
-  }
-
-  const location = () => {
-    Geolocation.getCurrentPosition(
-      //Will give you the current location
-      (position) => {
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-
-        setCurrentLatitude(currentLatitude);
-        setCurrentLongitude(currentLongitude);
-        SharedPreferences.setItem("lat", currentLatitude);
-        SharedPreferences.setItem("long", currentLongitude);
-
-
-      }, (error) => {
-        enableLocation() ;
-
-      }, {
-      enableHighAccuracy: true, timeout: 20000, maximumAge: 1000
-    }
-    );
-  };
+  
   const enableLocation = () =>{
     RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
       interval: 10000,
@@ -159,8 +124,18 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onRefresh = () =>{
-    getOneTimeLocation();
-    subscribeLocationLocation();
+    // getOneTimeLocation();
+    // subscribeLocationLocation();
+    console.log('OnTouch HomeScreen') ;
+    getSharedData();
+
+    currentLatitude != 0 && currentLongitude != 0 && navigation.navigate('Root', {
+      screen: 'GoogleMaps',
+      params: { latitude: currentLatitude, longitude: currentLongitude },
+      key: 'gm-1'
+    }) ;
+
+
   }
 
 
@@ -174,7 +149,10 @@ const HomeScreen = ({ navigation }) => {
           () => onRefresh()
         }
       >
-        {currentLatitude > 0 && currentLongitude > 0 && navigation.navigate('Root', {
+        {
+          console.log(currentLatitude+"   "+ currentLongitude)
+        }
+        {currentLatitude != 0 && currentLongitude != 0 && navigation.navigate('Root', {
           screen: 'GoogleMaps',
           params: { latitude: currentLatitude, longitude: currentLongitude },
           key: 'gm-1'

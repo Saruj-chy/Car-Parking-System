@@ -5,6 +5,7 @@ export const USER_REGISTER = 'https://snakes123.000webhostapp.com/bulbul_sir/use
 export const USER_LOGIN = 'https://snakes123.000webhostapp.com/bulbul_sir/user_login_bulbulsir.php';
 export const get_booked_slot_details = 'https://snakes123.000webhostapp.com/bulbul_sir/get_booked_slot_details.php';
 export const get_history_parking = 'https://snakes123.000webhostapp.com/bulbul_sir/get_history_parking.php';
+export const get_my_spot = 'https://snakes123.000webhostapp.com/bulbul_sir/get_my_spot.php';
 
 
 export const login_app_name = 'Smart Parking Occupancy Detection System';

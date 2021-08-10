@@ -150,7 +150,7 @@ function ProfileScreenStack({ navigation }) {
   );
 }
 
-function MySpotsScreenStack({ navigation }) {
+function MySpotsScreenStack({navigation}) {
   return (
     <Stack.Navigator initialRouteName="My Spots">
       <Stack.Screen
@@ -173,6 +173,7 @@ function MySpotsScreenStack({ navigation }) {
     </Stack.Navigator>
   );
 }
+
 function SignOutScreenStack({ navigation }) {
   return (
     <Stack.Navigator initialRouteName="Sign Out">
@@ -545,12 +546,30 @@ const MainNavigationScreen = ({ navigation }) => {
                     color: 'white',
                     justifyContent: 'flex-end',
                   }}
-                  icon={map_marker_icon}
+                  icon={add_plus_icon}
                 // onPress={() => setParkingSlot(true)}
                 />
               ),
             }}
             component={ParkMyCarScreenStack}
+          />
+          <Drawer.Screen
+            name="My Spots"
+            options={{
+              title: 'My Spots',
+              drawerIcon: ({focused, size}) => (
+                <FontAwesome
+                  style={{
+                    fontSize: 25,
+                    color: 'white',
+                    justifyContent: 'flex-end',
+                  }}
+                  icon={map_marker_icon}
+                  // onPress={() => setParkingSlot(true)}
+                />
+              ),
+            }}
+            component={MySpotsScreenStack}
           />
           <Drawer.Screen
             name="Sign Out"

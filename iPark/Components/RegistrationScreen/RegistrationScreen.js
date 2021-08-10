@@ -27,6 +27,7 @@ const RegistrationScreen = ({ navigation, history }) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState(0);
+  const [hidePass, setHidePass] = useState(true);
 
   const onRegisterFunc = () => {
     if (
@@ -120,11 +121,11 @@ const RegistrationScreen = ({ navigation, history }) => {
                 alignItems: 'center',
                 marginTop: 50,
               }}>
-              <Text style={{ fontSize: 30, color: pri_1 }}>
+              <Text style={{ fontSize: 55, color: pri_1, fontWeight:'bold' }} >
                 {login_short_name}
               </Text>
               <Text style={{ fontSize: 16, color: pri_2 }}>({login_app_name})</Text>
-              <Text style={{ fontSize: 30, color: pri_1, marginTop: 20 }}>Sign Up</Text>
+              <Text style={{ fontSize: 30, color: pri_1, marginTop: 30, fontWeight:'bold' }}>Sign Up</Text>
             </View>
             <View>
               <TextInput
@@ -141,7 +142,9 @@ const RegistrationScreen = ({ navigation, history }) => {
               <TextInput
                 style={styles.input}
                 onChangeText={setPassword}
+                autoCompleteType="password"
                 placeholder="Enter your Password"
+                secureTextEntry={hidePass ? true : false}
               />
 
               <TextInput

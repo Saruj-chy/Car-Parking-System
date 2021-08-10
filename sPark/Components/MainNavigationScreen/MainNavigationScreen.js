@@ -162,7 +162,7 @@ function MySpotsScreenStack({navigation}) {
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
           headerStyle: {
-            backgroundColor: '#f4511e', //Set Header color
+            backgroundColor: pri_1, //Set Header color
           },
           headerTintColor: 'white', //Set Header text color //
           headerTitleStyle: {
@@ -319,7 +319,7 @@ function Root({navigation}) {
         }}
         component={EntranceScreen}
       />
-    
+
 
       <Stack.Screen
         name="GoogleMaps"
@@ -545,12 +545,30 @@ const MainNavigationScreen = ({navigation}) => {
                     color: 'white',
                     justifyContent: 'flex-end',
                   }}
-                  icon={map_marker_icon}
+                  icon={add_plus_icon}
                   // onPress={() => setParkingSlot(true)}
                 />
               ),
             }}
             component={ParkMyCarScreenStack}
+          />
+          <Drawer.Screen
+            name="My Spots"
+            options={{
+              title: 'My Spots',
+              drawerIcon: ({focused, size}) => (
+                <FontAwesome
+                  style={{
+                    fontSize: 25,
+                    color: 'white',
+                    justifyContent: 'flex-end',
+                  }}
+                  icon={map_marker_icon}
+                  // onPress={() => setParkingSlot(true)}
+                />
+              ),
+            }}
+            component={MySpotsScreenStack}
           />
           <Drawer.Screen
             name="Sign Out"
@@ -570,7 +588,7 @@ const MainNavigationScreen = ({navigation}) => {
             }}
             component={SignOutScreenStack}
           />
-         
+
           <Drawer.Screen
             name="Report Issues"
             options={{
@@ -589,11 +607,6 @@ const MainNavigationScreen = ({navigation}) => {
             }}
             component={ReportScreenStack}
           />
-          {/* <Drawer.Screen
-          name="EntranceScreen"
-          options={{drawerLabel: 'Entrance Screen'}}
-          component={EntranceScreenStack}
-        /> */}
 
           <Drawer.Screen
             name="Root"
@@ -608,7 +621,7 @@ const MainNavigationScreen = ({navigation}) => {
         </Drawer.Navigator>
       </NavigationContainer>
 
-    
+
     </View>
   );
 };

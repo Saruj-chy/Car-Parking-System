@@ -46,9 +46,6 @@ const HomeScreen = ({ navigation }) => {
 
   const getSharedData = () =>{
     SharedPreferences.getItems(["lat", "long"], function (values) {
-
-
-      console.log(values[0] + "    " + values[1]);
       setCurrentLatitude(values[0]);
       setCurrentLongitude(values[1]);
 
@@ -159,8 +156,18 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const onRefresh = () =>{
-    getOneTimeLocation();
-    subscribeLocationLocation();
+    // getOneTimeLocation();
+    // subscribeLocationLocation();
+
+    console.log('OnTouch HomeScreen') ;
+    getSharedData();
+
+    currentLatitude != 0 && currentLongitude != 0 && navigation.navigate('Root', {
+      screen: 'GoogleMaps',
+      params: { latitude: currentLatitude, longitude: currentLongitude },
+      key: 'gm-1'
+    }) ;
+
   }
 
 
@@ -174,7 +181,7 @@ const HomeScreen = ({ navigation }) => {
           () => onRefresh()
         }
       >
-        {currentLatitude > 0 && currentLongitude > 0 && navigation.navigate('Root', {
+        {currentLatitude != 0 && currentLongitude != 0 && navigation.navigate('Root', {
           screen: 'GoogleMaps',
           params: { latitude: currentLatitude, longitude: currentLongitude },
           key: 'gm-1'

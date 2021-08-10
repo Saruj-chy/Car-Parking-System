@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import Dialog, {
@@ -18,7 +19,7 @@ const ReportScreen = () => {
 
 
     return (
-        <View>
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}} >
           <Button title="Report Dialog" onPress={() => setReportDialog(true)} />
       {/*=================================         for dialog view, it active when send btn click                =========================== */}
       {/*  ===========================                            Report a Problem                      ===============================      */}
